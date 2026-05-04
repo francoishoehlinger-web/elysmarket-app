@@ -1,17 +1,27 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ÉlysMarket — Marchés prédictifs entre amis</title>
+<title>AgoraX — Marchés prédictifs entre amis</title>
 <style>
   :root {
-    --bg: #0d1117; --bg-elev: #161b22; --bg-elev-2: #1c2230;
-    --border: #2a3140; --text: #e6edf3; --text-dim: #8b949e;
-    --accent: #2563eb; --yes: #22c55e; --no: #ef4444;
-    --yes-bg: rgba(34,197,94,.12); --no-bg: rgba(239,68,68,.12);
+    --bg: #0a0d12; --bg-elev: #12161e; --bg-elev-2: #1a1f29;
+    --border: #262d3b; --border-strong: #364056;
+    --text: #f0f4ff; --text-dim: #8b95aa;
+    --accent: #6366f1;
+    /* Couleurs néon / fluo — la marque AgoraX */
+    --yes:    #39ff14;
+    --yes-bg: rgba(57, 255, 20, 0.12);
+    --yes-bg-hover: rgba(57, 255, 20, 0.22);
+    --yes-glow: 0 0 12px rgba(57, 255, 20, 0.45);
+    --no:     #ff0844;
+    --no-bg:  rgba(255, 8, 68, 0.12);
+    --no-bg-hover: rgba(255, 8, 68, 0.22);
+    --no-glow: 0 0 12px rgba(255, 8, 68, 0.45);
     --bleu: #0055A4; --rouge: #EF4135;
+    --chaos: #ffd400;
+    --chaos-bg: rgba(255, 212, 0, 0.14);
   }
   * { box-sizing: border-box; }
   html, body { margin:0; background: var(--bg); color: var(--text);
@@ -19,36 +29,41 @@
   a { color: inherit; }
   button { font: inherit; color: inherit; cursor: pointer;
     border: 1px solid var(--border); background: var(--bg-elev);
-    border-radius: 8px; padding: 8px 14px; transition: background .15s; }
-  button:hover { background: var(--bg-elev-2); }
+    border-radius: 8px; padding: 8px 14px; transition: background .15s, border-color .15s; }
+  button:hover { background: var(--bg-elev-2); border-color: var(--border-strong); }
   button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
-  button.primary:hover { background: #3b82f6; }
+  button.primary:hover { background: #818cf8; }
   button:disabled { opacity: 0.5; cursor: not-allowed; }
-  input { font: inherit; color: var(--text); background: #0a0e14;
+  input { font: inherit; color: var(--text); background: #06090f;
     border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; width: 100%; }
   input:focus { outline: 2px solid var(--accent); outline-offset: 0; }
   .tabular { font-variant-numeric: tabular-nums; }
+  .neon-yes { color: var(--yes); text-shadow: var(--yes-glow); }
+  .neon-no  { color: var(--no);  text-shadow: var(--no-glow); }
 
   /* Header */
   header.top { position: sticky; top:0; z-index: 50;
     display: flex; justify-content: space-between; align-items: center;
-    padding: 12px 24px; background: rgba(13,17,23,.92); backdrop-filter: blur(8px);
+    padding: 12px 24px; background: rgba(10,13,18,.92); backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--border); }
-  .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 18px; cursor: pointer; }
-  .flag { width: 24px; height: 16px; border-radius: 2px;
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 19px; cursor: pointer; letter-spacing: -0.01em; }
+  .brand .x { color: var(--yes); text-shadow: var(--yes-glow); font-weight: 800; }
+  .flag { width: 22px; height: 15px; border-radius: 2px;
     background: linear-gradient(to right, var(--bleu) 33%, #fff 33%, #fff 66%, var(--rouge) 66%); }
   .brand small { color: var(--text-dim); font-size: 12px; font-weight: 400; }
-  .who { display: flex; align-items: center; gap: 12px; }
+  .who { display: flex; align-items: center; gap: 10px; }
   .pill { padding: 6px 12px; border: 1px solid var(--border); background: var(--bg-elev);
     border-radius: 999px; font-size: 13px; }
+  .pill b.solidi { color: var(--yes); text-shadow: var(--yes-glow); }
 
-  /* Auth screen */
-  .auth-wrap { max-width: 420px; margin: 80px auto; padding: 0 20px; }
+  /* Auth */
+  .auth-wrap { max-width: 440px; margin: 60px auto; padding: 0 20px; }
   .auth-card { background: var(--bg-elev); border: 1px solid var(--border);
     border-radius: 16px; padding: 32px; }
-  .auth-card h1 { margin: 0 0 6px; font-size: 22px; }
-  .auth-card p.sub { color: var(--text-dim); margin: 0 0 20px; }
-  .auth-tabs { display: flex; gap: 4px; background: #0a0e14; padding: 4px;
+  .auth-card h1 { margin: 0 0 4px; font-size: 24px; letter-spacing: -0.02em; }
+  .auth-card p.sub { color: var(--text-dim); margin: 0 0 20px; font-size: 14px; }
+  .auth-tagline { color: var(--text); font-style: italic; font-size: 14px; padding: 12px 14px; background: var(--bg-elev-2); border-radius: 10px; border-left: 2px solid var(--yes); margin: 16px 0 20px; }
+  .auth-tabs { display: flex; gap: 4px; background: #06090f; padding: 4px;
     border-radius: 10px; margin-bottom: 16px; border: 1px solid var(--border); }
   .auth-tab { flex: 1; padding: 8px; text-align: center; border-radius: 8px;
     color: var(--text-dim); cursor: pointer; user-select: none; font-weight: 500; }
@@ -58,21 +73,20 @@
   .auth-card button.primary { width: 100%; padding: 11px; margin-top: 8px; }
   .err { color: var(--no); font-size: 13px; margin-top: 8px; }
 
-  /* Home / leagues list */
-  .container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+  .container { max-width: 1320px; margin: 0 auto; padding: 24px; }
   .page-head { display:flex; justify-content: space-between; align-items: end; margin-bottom: 18px; flex-wrap: wrap; gap: 12px; }
-  .page-head h1 { margin: 0; font-size: 22px; }
+  .page-head h1 { margin: 0; font-size: 24px; letter-spacing: -0.02em; }
   .page-head p { margin: 4px 0 0; color: var(--text-dim); }
 
   .leagues-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
   .league-card { background: var(--bg-elev); border: 1px solid var(--border);
-    border-radius: 12px; padding: 18px; cursor: pointer; transition: border-color .15s; }
-  .league-card:hover { border-color: #3a4252; }
+    border-radius: 12px; padding: 18px; cursor: pointer; transition: border-color .15s, transform .05s; }
+  .league-card:hover { border-color: var(--border-strong); }
   .league-card .name { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
   .league-card .sub { color: var(--text-dim); font-size: 13px; }
   .league-card .stats { display: flex; gap: 16px; margin-top: 12px; font-size: 13px; }
-  .league-card .stats span b { color: var(--yes); font-weight: 600; }
-  .empty { text-align: center; padding: 48px 20px; color: var(--text-dim); }
+  .league-card .stats span b { color: var(--yes); font-weight: 700; }
+  .empty { text-align: center; padding: 48px 20px; color: var(--text-dim); font-style: italic; }
 
   .row-actions { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
   .row-actions > div { flex: 1; min-width: 280px; background: var(--bg-elev);
@@ -83,7 +97,7 @@
   .row-actions form input { flex: 1; }
 
   /* League dashboard */
-  .league-grid { display: grid; grid-template-columns: 280px minmax(0, 1fr) 320px; gap: 16px; }
+  .league-grid { display: grid; grid-template-columns: 320px minmax(0, 1fr) 320px; gap: 16px; }
   @media (max-width: 1100px) { .league-grid { grid-template-columns: 1fr; } }
   .panel { background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px; }
   .panel-h { padding: 12px 14px; border-bottom: 1px solid var(--border);
@@ -91,93 +105,104 @@
   .panel-b { padding: 10px 6px; }
   .panel-b.scrolly { max-height: 60vh; overflow-y: auto; }
 
+  /* Leaderboard with tier */
   .lb-row { display: grid; grid-template-columns: 24px 28px minmax(0,1fr) auto;
-    gap: 8px; padding: 8px 12px; align-items: center; font-size: 13px; border-radius: 8px; }
-  .lb-row.me { background: var(--bg-elev-2); }
+    gap: 8px; padding: 8px 12px; align-items: center; font-size: 13px; border-radius: 8px; cursor: pointer; }
+  .lb-row:hover { background: var(--bg-elev-2); }
+  .lb-row.me { background: rgba(99, 102, 241, 0.10); border: 1px solid rgba(99,102,241,0.35); }
   .lb-row .rk { color: var(--text-dim); font-weight: 500; }
   .lb-row .av { width: 28px; height: 28px; border-radius: 50%;
     background: var(--bg-elev-2); display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 600; }
+    font-size: 11px; font-weight: 700; color: #06090f; }
   .lb-row .ps { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .lb-row .vl { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .lb-row .ps small { color: var(--text-dim); margin-left: 4px; font-size: 10px; }
+  .lb-row .vl { font-variant-numeric: tabular-nums; font-weight: 700; }
+  .lb-row .vl small { font-weight: 500; font-size: 11px; }
 
+  /* Markets grid */
   .markets-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; padding: 12px; }
-  .market-card { background: #0d1117; border: 1px solid var(--border); border-radius: 10px;
-    padding: 14px; cursor: pointer; display: flex; flex-direction: column; gap: 10px; }
-  .market-card:hover { border-color: #3a4252; }
+  .market-card { background: #0a0d12; border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px; cursor: pointer; display: flex; flex-direction: column; gap: 10px;
+    transition: border-color .15s; }
+  .market-card:hover { border-color: var(--border-strong); }
+  .market-card.chaos { border-color: rgba(255, 212, 0, 0.45); background: linear-gradient(180deg, rgba(255,212,0,0.04), #0a0d12 60%); }
+  .market-card.chaos:hover { border-color: var(--chaos); }
   .market-card .top-row { display: flex; gap: 10px; align-items: center; }
-  .market-icon { width: 32px; height: 32px; border-radius: 6px;
+  .market-icon { width: 34px; height: 34px; border-radius: 8px;
     background: var(--bg-elev-2); border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
+    display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 16px; }
+  .market-card.chaos .market-icon { border-color: rgba(255, 212, 0, 0.45); }
   .market-card .sub { color: var(--text-dim); font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
   .market-card .q { font-size: 13px; line-height: 1.35; font-weight: 500;
     display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   .market-card .pct-row { display: flex; align-items: center; gap: 12px; }
-  .pct-circle { width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0; position: relative;
-    background: conic-gradient(var(--yes) calc(var(--p) * 1%), #2a3140 0); }
-  .pct-circle::after { content:""; position: absolute; inset: 4px; border-radius: 50%; background: #0d1117; }
+  .pct-circle { width: 50px; height: 50px; border-radius: 50%; flex-shrink: 0; position: relative;
+    background: conic-gradient(var(--yes) calc(var(--p) * 1%), #1a1f29 0); }
+  .pct-circle::after { content:""; position: absolute; inset: 4px; border-radius: 50%; background: #0a0d12; }
   .pct-circle span { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 13px; font-variant-numeric: tabular-nums; }
+    font-weight: 700; font-size: 13px; font-variant-numeric: tabular-nums; color: var(--yes); }
   .market-card .actions { display: flex; gap: 6px; }
-  .btn-yes, .btn-no { flex: 1; font-weight: 600; padding: 8px; border-radius: 8px; border: 1px solid transparent; font-size: 12px; }
-  .btn-yes { background: var(--yes-bg); color: var(--yes); }
-  .btn-yes:hover { background: rgba(34,197,94,.22); }
-  .btn-no  { background: var(--no-bg);  color: var(--no);  }
-  .btn-no:hover  { background: rgba(239,68,68,.22); }
-  .market-card .my-pos { font-size: 11px; color: var(--text-dim); }
-  .market-card .my-pos b.y { color: var(--yes); }
-  .market-card .my-pos b.n { color: var(--no); }
+  .btn-yes, .btn-no { flex: 1; font-weight: 700; padding: 9px; border-radius: 8px; border: 1px solid transparent; font-size: 12px; }
+  .btn-yes { background: var(--yes-bg); color: var(--yes); border-color: rgba(57, 255, 20, 0.25); }
+  .btn-yes:hover { background: var(--yes-bg-hover); box-shadow: var(--yes-glow); }
+  .btn-no  { background: var(--no-bg);  color: var(--no);  border-color: rgba(255, 8, 68, 0.25); }
+  .btn-no:hover  { background: var(--no-bg-hover);  box-shadow: var(--no-glow); }
+
+  .badge-chaos { display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 8px; background: var(--chaos-bg); color: var(--chaos);
+    border: 1px solid rgba(255, 212, 0, 0.4); border-radius: 999px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
 
   .chips { display: flex; gap: 6px; padding: 0 12px 12px; flex-wrap: wrap; }
   .chip { padding: 5px 12px; border-radius: 999px; background: var(--bg-elev-2);
     color: var(--text-dim); font-size: 12px; cursor: pointer; user-select: none;
     border: 1px solid var(--border); }
   .chip:hover { color: var(--text); }
-  .chip.active { background: var(--text); color: #000; border-color: var(--text); font-weight: 600; }
+  .chip.active { background: var(--text); color: #06090f; border-color: var(--text); font-weight: 700; }
+  .chip.chaos.active { background: var(--chaos); color: #1c1100; border-color: var(--chaos); }
 
-  /* Activity feed (right column) */
+  /* Activity feed */
   .feed-msg { display: grid; grid-template-columns: 32px minmax(0,1fr); gap: 10px;
     padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 12px; }
   .feed-msg:last-child { border-bottom: none; }
   .feed-msg .av { width: 28px; height: 28px; border-radius: 50%; background: var(--bg-elev-2);
-    display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 11px; }
-  .feed-msg .body b { font-weight: 600; }
+    display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 11px; color: #06090f; }
+  .feed-msg .body b { font-weight: 700; }
   .feed-msg .when { color: var(--text-dim); font-size: 10px; margin-top: 2px; }
 
-  /* Chat input */
   .chat-input { padding: 10px 12px; border-top: 1px solid var(--border); display: flex; gap: 6px; }
-  .chat-input input { background: #0a0e14; }
+  .chat-input input { background: #06090f; }
 
   /* Modal */
-  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.65);
+  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.72);
     display: none; align-items: center; justify-content: center; padding: 20px; z-index: 100; }
   .modal-bg.show { display: flex; }
   .modal { background: var(--bg-elev); border: 1px solid var(--border);
-    border-radius: 16px; max-width: 880px; width: 100%; max-height: 92vh; overflow: auto;
+    border-radius: 16px; max-width: 920px; width: 100%; max-height: 92vh; overflow: auto;
     display: grid; grid-template-columns: 1fr 320px; }
   @media (max-width: 760px) { .modal { grid-template-columns: 1fr; } }
   .modal .left { padding: 24px; }
   .modal .right { padding: 24px; border-left: 1px solid var(--border); background: var(--bg-elev-2); }
-  .modal h2 { margin: 0 0 6px; font-size: 17px; }
+  .modal h2 { margin: 0 0 6px; font-size: 18px; line-height: 1.3; letter-spacing: -0.01em; }
   .modal .submeta { color: var(--text-dim); font-size: 12px; margin-bottom: 14px; }
   .price-large { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
-  .price-large .pl { font-size: 32px; font-weight: 700; color: var(--yes); }
-  .chart-wrap { background: #0a0e14; border: 1px solid var(--border);
+  .price-large .pl { font-size: 36px; font-weight: 800; color: var(--yes); text-shadow: var(--yes-glow); }
+  .chart-wrap { background: #06090f; border: 1px solid var(--border);
     border-radius: 10px; padding: 12px; }
   .chart { width: 100%; height: 220px; }
   .order-tabs { display: flex; padding: 3px; background: var(--bg-elev);
     border: 1px solid var(--border); border-radius: 10px; margin-bottom: 14px; }
   .order-tab { flex: 1; padding: 8px; text-align: center; border-radius: 8px;
-    cursor: pointer; user-select: none; color: var(--text-dim); font-weight: 600; }
-  .order-tab.active.yes { background: var(--yes-bg); color: var(--yes); }
-  .order-tab.active.no  { background: var(--no-bg);  color: var(--no); }
+    cursor: pointer; user-select: none; color: var(--text-dim); font-weight: 700; }
+  .order-tab.active.yes { background: var(--yes-bg); color: var(--yes); text-shadow: var(--yes-glow); }
+  .order-tab.active.no  { background: var(--no-bg);  color: var(--no);  text-shadow: var(--no-glow); }
   .order-row { display: flex; justify-content: space-between; padding: 7px 0; font-size: 13px; }
   .order-row .lbl { color: var(--text-dim); }
-  .place { width:100%; padding: 12px; border-radius: 10px; font-weight: 700;
+  .place { width:100%; padding: 13px; border-radius: 10px; font-weight: 800;
     font-size: 14px; border: none; margin-top: 12px; cursor: pointer; }
-  .place.yes { background: var(--yes); color: #052e16; }
-  .place.no  { background: var(--no);  color: #2a0a0a; }
-  .place:hover { filter: brightness(1.08); }
+  .place.yes { background: var(--yes); color: #052900; box-shadow: var(--yes-glow); }
+  .place.no  { background: var(--no);  color: #2a0010; box-shadow: var(--no-glow); }
+  .place:hover { filter: brightness(1.1); }
   .close-btn { position: sticky; top: 0; float: right; background: transparent;
     border: none; font-size: 22px; color: var(--text-dim); cursor: pointer; padding: 0 8px; }
 
@@ -185,13 +210,36 @@
   .toast { position: fixed; bottom: 24px; right: 24px; z-index: 1000;
     background: var(--bg-elev-2); border: 1px solid var(--border);
     border-left: 3px solid var(--yes);
-    border-radius: 10px; padding: 12px 16px; box-shadow: 0 8px 24px rgba(0,0,0,.4);
-    animation: sl .25s ease-out; }
+    border-radius: 10px; padding: 12px 16px; box-shadow: 0 8px 24px rgba(0,0,0,.5);
+    animation: sl .25s ease-out; max-width: 360px; }
   .toast.error { border-left-color: var(--no); }
   @keyframes sl { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
   .badge-code { font-family: ui-monospace, monospace; padding: 4px 8px;
     background: var(--bg-elev-2); border: 1px solid var(--border); border-radius: 6px; font-size: 12px; }
+
+  /* Bankroll publique modal */
+  .bankroll-modal { background: var(--bg-elev); border: 1px solid var(--border);
+    border-radius: 16px; max-width: 580px; width: 100%; max-height: 80vh; overflow: auto; padding: 24px; }
+  .pos-row { display: grid; grid-template-columns: 1fr auto auto auto; gap: 10px;
+    padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px; align-items: center; }
+  .pos-row:last-child { border-bottom: none; }
+  .pos-row .side-yes { color: var(--yes); font-weight: 700; }
+  .pos-row .side-no  { color: var(--no);  font-weight: 700; }
+
+  /* Banner */
+  .banner { background: linear-gradient(90deg, rgba(57,255,20,0.07), rgba(255,8,68,0.07));
+    border: 1px solid var(--border); border-radius: 12px; padding: 14px 18px;
+    margin-bottom: 20px; display: flex; gap: 14px; align-items: center; }
+  .banner .b-text b { color: var(--text); }
+  .banner .b-text small { color: var(--text-dim); display: block; margin-top: 2px; font-style: italic; }
+
+  /* Tier color */
+  .tier-Pythie   { color: var(--yes); text-shadow: var(--yes-glow); }
+  .tier-Devin    { color: #93ff85; }
+  .tier-Sage     { color: var(--text-dim); }
+  .tier-Apprenti { color: var(--text-dim); }
+  .tier-Néophyte { color: var(--no); text-shadow: var(--no-glow); }
 </style>
 </head>
 <body>
@@ -199,25 +247,26 @@
 <header class="top" id="topbar" hidden>
   <div class="brand" onclick="goHome()">
     <span class="flag"></span>
-    ÉlysMarket
-    <small>· Paris politiques entre amis</small>
+    Agora<span class="x">X</span>
+    <small>· Tu sens venir la dinguerie politique ?</small>
   </div>
   <div class="who">
     <span class="pill" id="leaguePill" hidden></span>
     <span class="pill">@<span id="userPseudo">—</span></span>
-    <button onclick="logout()">Se déconnecter</button>
+    <button onclick="logout()">Déconnexion</button>
   </div>
 </header>
 
-<!-- Authentification -->
+<!-- Auth -->
 <div class="auth-wrap" id="view-auth">
   <div class="auth-card">
     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 18px;">
       <span class="flag"></span>
-      <strong style="font-size: 18px;">ÉlysMarket</strong>
+      <strong style="font-size: 22px; letter-spacing: -0.02em;">Agora<span class="neon-yes" style="font-weight:800;">X</span></strong>
     </div>
-    <h1>Pariez sur la politique entre amis</h1>
-    <p class="sub">Plateforme hors-argent — vous démarrez avec 10 000 bulletins virtuels par ligue.</p>
+    <h1>Tu n'as pas une opinion. Tu as une intuition.</h1>
+    <p class="sub">Marché prédictif politique entre amis · monnaie virtuelle · zéro euro engagé · 100 % trash talk.</p>
+    <div class="auth-tagline">« Spoiler : quelqu'un va dire un truc qu'il ne fallait pas. Mise dessus. »</div>
     <div class="auth-tabs">
       <div class="auth-tab active" data-tab="login">Se connecter</div>
       <div class="auth-tab" data-tab="signup">Créer un compte</div>
@@ -229,16 +278,23 @@
   </div>
 </div>
 
-<!-- Home : mes ligues + créer/rejoindre -->
+<!-- Home -->
 <section class="container" id="view-home" hidden>
+  <div class="banner">
+    <div style="font-size: 28px;">🗳️</div>
+    <div class="b-text">
+      <b>Les marchés sont chauds. Toi aussi ?</b>
+      <small>Crée une ligue avec ta bande. Le premier qui anticipe la prochaine dinguerie rafle la mise.</small>
+    </div>
+  </div>
   <div class="page-head">
-    <div><h1>Mes ligues</h1><p>Rejoignez vos amis ou créez votre propre ligue privée.</p></div>
+    <div><h1>Mes ligues</h1><p>Tu joues entre potes, collègues, ou anciens du lycée. Tu n'es pas seul à parier sur la France.</p></div>
   </div>
   <div id="leaguesList" class="leagues-grid"></div>
   <div class="row-actions">
     <div>
       <h3>Créer une nouvelle ligue</h3>
-      <p>Vous serez le propriétaire — vous résolvez les marchés à leur clôture.</p>
+      <p>Tu seras le proprio — c'est toi qui résous les marchés à la clôture.</p>
       <form onsubmit="event.preventDefault(); createLeague();">
         <input id="newLeagueName" placeholder="Anciens du Lycée Henri-IV…" />
         <button type="submit" class="primary">Créer</button>
@@ -246,7 +302,7 @@
     </div>
     <div>
       <h3>Rejoindre une ligue</h3>
-      <p>Entrez le code à 7 caractères communiqué par le propriétaire.</p>
+      <p>Le code à 7 caractères que ton pote t'a balancé sur WhatsApp.</p>
       <form onsubmit="event.preventDefault(); joinLeague();">
         <input id="joinCode" placeholder="QF7-9PXM" style="text-transform: uppercase; font-family: ui-monospace, monospace;" />
         <button type="submit" class="primary">Rejoindre</button>
@@ -255,25 +311,31 @@
   </div>
 </section>
 
-<!-- Vue ligue -->
+<!-- League view -->
 <section class="container" id="view-league" hidden>
   <div class="page-head">
     <div>
       <h1 id="lg-name">…</h1>
-      <p>Code de la ligue : <span class="badge-code" id="lg-code">—</span> · partagez-le pour inviter <span id="lg-info" class="tabular"></span></p>
+      <p>Code · <span class="badge-code" id="lg-code">—</span> · partage-le pour inviter <span id="lg-info" class="tabular"></span></p>
     </div>
     <div style="display: flex; gap: 10px;">
-      <span class="pill">Solde : <b class="tabular" style="color: var(--yes);" id="lg-balance">—</b></span>
+      <span class="pill">Solidi : <b class="tabular solidi" id="lg-balance">—</b></span>
       <span class="pill">Rang : <b id="lg-rank" class="tabular">—</b></span>
+      <span class="pill" id="lg-tier-pill" hidden>Indice : <b id="lg-tier">—</b></span>
     </div>
   </div>
 
   <div class="league-grid">
+    <!-- Leaderboard -->
     <div class="panel">
-      <div class="panel-h">Classement</div>
+      <div class="panel-h">
+        <span>Classement</span>
+        <span style="color: var(--text-dim); font-weight: 400; font-size: 11px;">cliquer = voir bankroll</span>
+      </div>
       <div class="panel-b" id="leaderboard"></div>
     </div>
 
+    <!-- Markets -->
     <div class="panel">
       <div class="panel-h">
         <span>Marchés</span>
@@ -281,6 +343,7 @@
       </div>
       <div class="chips" id="market-chips">
         <span class="chip active" data-cat="all">Tous</span>
+        <span class="chip chaos" data-cat="chaos">⚡ Mode Chaos</span>
         <span class="chip" data-cat="pres">Présidentielle 2027</span>
         <span class="chip" data-cat="leg">Législatives</span>
         <span class="chip" data-cat="other">Politique générale</span>
@@ -288,21 +351,22 @@
       <div class="markets-grid" id="markets"></div>
     </div>
 
+    <!-- Activity / Chat -->
     <div class="panel">
       <div class="panel-h">
-        <span>Activité</span>
+        <span>Trash talk</span>
         <span style="color: var(--text-dim); font-weight: 400; font-size: 11px;" id="lg-activity-count">—</span>
       </div>
       <div class="panel-b scrolly" id="activity"></div>
       <div class="chat-input">
-        <input id="chatText" placeholder="Écrire un message…" maxlength="280" onkeydown="if(event.key==='Enter')postMessage()" />
+        <input id="chatText" placeholder="Balance ton avis…" maxlength="280" onkeydown="if(event.key==='Enter')postMessage()" />
         <button onclick="postMessage()">Envoyer</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Modal marché -->
+<!-- Market modal -->
 <div class="modal-bg" id="modal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
     <div class="left">
@@ -317,7 +381,7 @@
         <svg class="chart" id="m-chart" viewBox="0 0 600 220" preserveAspectRatio="none"></svg>
       </div>
       <div style="margin-top: 18px;">
-        <h3 style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); margin: 0 0 8px;">Dernières positions</h3>
+        <h3 style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); margin: 0 0 8px;">Bankroll publique · qui mise quoi</h3>
         <div id="m-recent"></div>
       </div>
     </div>
@@ -328,7 +392,7 @@
       </div>
       <div class="order-row"><span class="lbl">Prix par part</span><span class="tabular" id="o-price">—</span></div>
       <div class="order-row"><span class="lbl">Solde</span><span class="tabular" id="o-bal">—</span></div>
-      <label style="font-size:12px; color:var(--text-dim); display:block; margin: 8px 0 4px;">Mise (bulletins)</label>
+      <label style="font-size:12px; color:var(--text-dim); display:block; margin: 8px 0 4px;">Mise (Solidi)</label>
       <input id="o-amount" type="number" min="1" step="1" value="100" />
       <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 8px;">
         <button onclick="setAmount(50)">50</button>
@@ -338,7 +402,7 @@
       </div>
       <div class="order-row" style="margin-top: 8px;"><span class="lbl">Parts achetées</span><span class="tabular" id="o-shares">—</span></div>
       <div class="order-row"><span class="lbl">Prix moyen</span><span class="tabular" id="o-avg">—</span></div>
-      <div class="order-row"><span class="lbl">Gain potentiel</span><span class="tabular" id="o-payout" style="color: var(--yes); font-weight: 700;">—</span></div>
+      <div class="order-row"><span class="lbl">Gain potentiel</span><span class="tabular neon-yes" id="o-payout">—</span></div>
       <button class="place yes" id="o-place" onclick="placeBet()">Acheter OUI</button>
       <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
         <h3 style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); margin: 0 0 8px;">Ma position</h3>
@@ -348,12 +412,20 @@
   </div>
 </div>
 
+<!-- Bankroll publique modal (par membre) -->
+<div class="modal-bg" id="bankrollModal" onclick="if(event.target===this)closeBankroll()">
+  <div class="bankroll-modal">
+    <button class="close-btn" onclick="closeBankroll()">×</button>
+    <h2 id="bk-title" style="margin: 0 0 6px; font-size: 17px;">—</h2>
+    <div id="bk-meta" style="color: var(--text-dim); font-size: 12px; margin-bottom: 14px;">—</div>
+    <div id="bk-positions"></div>
+  </div>
+</div>
+
 <script>
-/* ----------------------------------------------------------------- */
-/* Client API                                                         */
-/* ----------------------------------------------------------------- */
-const TOKEN_KEY = 'elysmarket.token';
-const PSEUDO_KEY = 'elysmarket.pseudo';
+/* ---------- Client API ---------- */
+const TOKEN_KEY = 'agorax.token';
+const PSEUDO_KEY = 'agorax.pseudo';
 let token = localStorage.getItem(TOKEN_KEY);
 let pseudo = localStorage.getItem(PSEUDO_KEY);
 
@@ -371,9 +443,7 @@ async function api(method, url, body) {
   return data;
 }
 
-/* ----------------------------------------------------------------- */
-/* Vues / routage                                                     */
-/* ----------------------------------------------------------------- */
+/* ---------- Vues ---------- */
 let currentLeagueId = null;
 let currentLeague = null;
 let currentMarketId = null;
@@ -394,15 +464,9 @@ async function boot() {
     const me = await api('GET', '/me');
     pseudo = me.pseudo;
     document.getElementById('userPseudo').textContent = pseudo;
-    if (me.leagues.length === 0) {
-      show('view-home');
-      renderLeagues(me.leagues);
-    } else {
-      show('view-home');
-      renderLeagues(me.leagues);
-    }
+    show('view-home');
+    renderLeagues(me.leagues);
   } catch (e) {
-    console.warn(e);
     localStorage.removeItem(TOKEN_KEY); token = null;
     show('view-auth');
   }
@@ -424,7 +488,7 @@ async function refreshHome() {
 function renderLeagues(leagues) {
   const list = document.getElementById('leaguesList');
   if (leagues.length === 0) {
-    list.innerHTML = '<div class="empty">Aucune ligue. Créez-en une ou rejoignez celle d\'un ami.</div>';
+    list.innerHTML = '<div class="empty">Aucune ligue. Crée la tienne, ou demande le code à un pote.</div>';
     return;
   }
   list.innerHTML = leagues.map(l => `
@@ -433,15 +497,13 @@ function renderLeagues(leagues) {
       <div class="sub">Code <span class="badge-code">${l.code}</span></div>
       <div class="stats">
         <span>${l.memberCount} membre${l.memberCount > 1 ? 's' : ''}</span>
-        <span>Solde : <b>${fmtNum(l.myBalance)} ₿</b></span>
+        <span>Solde : <b>${fmtNum(l.myBalance)} S</b></span>
       </div>
     </div>
   `).join('');
 }
 
-/* ----------------------------------------------------------------- */
-/* Auth                                                               */
-/* ----------------------------------------------------------------- */
+/* ---------- Auth ---------- */
 let authMode = 'login';
 document.querySelectorAll('.auth-tab').forEach(el => {
   el.addEventListener('click', () => {
@@ -478,15 +540,13 @@ function logout() {
   show('view-auth');
 }
 
-/* ----------------------------------------------------------------- */
-/* Leagues                                                            */
-/* ----------------------------------------------------------------- */
+/* ---------- Leagues ---------- */
 async function createLeague() {
   const name = document.getElementById('newLeagueName').value.trim();
   if (!name) return;
   try {
     const lg = await api('POST', '/leagues', { name });
-    toast(`Ligue créée — code ${lg.code} (partagez-le !)`);
+    toast(`Ligue créée. Le code ${lg.code} — balance-le à tes potes.`);
     document.getElementById('newLeagueName').value = '';
     openLeague(lg.id);
   } catch (e) { toast(e.message, true); }
@@ -496,7 +556,7 @@ async function joinLeague() {
   if (!code) return;
   try {
     const lg = await api('POST', '/leagues/join', { code });
-    toast(`Bienvenue dans « ${lg.name} »`);
+    toast(`Bienvenue dans « ${lg.name} » 🔥`);
     document.getElementById('joinCode').value = '';
     openLeague(lg.id);
   } catch (e) { toast(e.message, true); }
@@ -524,42 +584,51 @@ function renderLeague(lg) {
 
   const me = lg.leaderboard.find(m => m.pseudo === pseudo);
   if (me) {
-    document.getElementById('lg-balance').textContent = fmtNum(me.balance);
+    document.getElementById('lg-balance').textContent = fmtNum(me.balance) + ' S';
     const rk = lg.leaderboard.findIndex(m => m.pseudo === pseudo) + 1;
     document.getElementById('lg-rank').textContent = `${rk}/${lg.leaderboard.length}`;
+    const tierEl = document.getElementById('lg-tier');
+    tierEl.textContent = `${me.tier} (${(me.indicePolitique*100>=0?'+':'')}${(me.indicePolitique*100).toFixed(1)}%)`;
+    tierEl.className = 'tier-' + me.tier;
+    document.getElementById('lg-tier-pill').hidden = false;
   }
 
   // Leaderboard
   const lbEl = document.getElementById('leaderboard');
   lbEl.innerHTML = lg.leaderboard.map((m, i) => `
-    <div class="lb-row ${m.pseudo === pseudo ? 'me' : ''}">
+    <div class="lb-row ${m.pseudo === pseudo ? 'me' : ''}" onclick="openBankroll(${m.userId})">
       <span class="rk">${i+1}</span>
       <span class="av" style="background: ${avatarBg(m.pseudo)};">${initials(m.pseudo)}</span>
-      <span class="ps">${escapeHtml(m.pseudo)}</span>
-      <span class="vl">${fmtNum(m.total)}</span>
+      <span class="ps">${escapeHtml(m.pseudo)} <small class="tier-${m.tier}">· ${m.tier}</small></span>
+      <span class="vl">${fmtNum(m.total)} S<br/><small style="color: ${m.indicePolitique>=0?'var(--yes)':'var(--no)'};">${m.indicePolitique>=0?'+':''}${(m.indicePolitique*100).toFixed(1)}%</small></span>
     </div>
   `).join('');
 
   // Markets
   const mEl = document.getElementById('markets');
-  const filtered = lg.markets.filter(m => currentCategory === 'all' || m.cat === currentCategory);
-  document.getElementById('m-count').textContent = `${filtered.length} marchés`;
+  let filtered;
+  if (currentCategory === 'all') filtered = lg.markets;
+  else if (currentCategory === 'chaos') filtered = lg.markets.filter(m => m.type === 'chaos');
+  else filtered = lg.markets.filter(m => m.cat === currentCategory);
+
+  document.getElementById('m-count').textContent = `${filtered.length} marché${filtered.length>1?'s':''}`;
   mEl.innerHTML = filtered.map(m => {
     const pct = m.price * 100;
-    const myPos = (lg.leaderboard.find(x => x.pseudo === pseudo) || {});
+    const isChaos = m.type === 'chaos';
     return `
-      <div class="market-card" onclick="openMarket('${m.id}')">
+      <div class="market-card ${isChaos ? 'chaos' : ''}" onclick="openMarket('${m.id}')">
         <div class="top-row">
           <div class="market-icon">${m.icon}</div>
-          <div style="min-width: 0;">
+          <div style="min-width: 0; flex: 1;">
             <div class="sub">${escapeHtml(m.sub)}</div>
             <div class="q" style="margin-top: 2px;">${escapeHtml(m.q)}</div>
           </div>
+          ${isChaos ? `<span class="badge-chaos" title="Mode Chaos · ${m.durationH}h">⚡ ${m.durationH}h</span>` : ''}
         </div>
         <div class="pct-row">
           <div class="pct-circle" style="--p:${pct.toFixed(1)};"><span>${pct.toFixed(0)}%</span></div>
           <div style="flex: 1;">
-            <div style="font-size: 12px; color: var(--text-dim);">Volume <b style="color: var(--text); font-variant-numeric: tabular-nums;">${fmtNum(m.vol)} ₿</b></div>
+            <div style="font-size: 12px; color: var(--text-dim);">Volume <b style="color: var(--text); font-variant-numeric: tabular-nums;">${fmtNum(m.vol)} S</b></div>
             <svg class="spark" viewBox="0 0 200 30" preserveAspectRatio="none" style="width: 100%; height: 28px; display: block; margin-top: 4px;">
               ${sparkPath(m.history)}
             </svg>
@@ -571,7 +640,7 @@ function renderLeague(lg) {
         </div>
       </div>
     `;
-  }).join('') || '<div class="empty">Aucun marché dans cette catégorie.</div>';
+  }).join('') || '<div class="empty">Rien dans cette catégorie. Calme avant la tempête.</div>';
 
   // Activity
   const act = document.getElementById('activity');
@@ -579,7 +648,7 @@ function renderLeague(lg) {
     ...lg.activity.map(a => ({ ...a, kind: 'activity' })),
     ...lg.messages.map(a => ({ ...a, kind: 'message' })),
   ].sort((a, b) => b.t - a.t).slice(0, 50);
-  document.getElementById('lg-activity-count').textContent = items.length + ' évts';
+  document.getElementById('lg-activity-count').textContent = items.length + ' éléments';
   act.innerHTML = items.map(it => {
     const ps = it.pseudo || (currentLeague.leaderboard.find(m => m.userId === it.userId)?.pseudo || '?');
     return `
@@ -593,7 +662,7 @@ function renderLeague(lg) {
         </div>
       </div>
     `;
-  }).join('') || '<div class="empty">Aucune activité.</div>';
+  }).join('') || '<div class="empty">Personne ne moufte pour l\'instant. Lance le débat.</div>';
 }
 
 document.querySelectorAll('#market-chips .chip').forEach(el => {
@@ -615,9 +684,7 @@ async function postMessage() {
   } catch (e) { toast(e.message, true); }
 }
 
-/* ----------------------------------------------------------------- */
-/* Market modal                                                       */
-/* ----------------------------------------------------------------- */
+/* ---------- Market modal ---------- */
 let modalMarket = null;
 
 async function openMarket(mid, side) {
@@ -640,36 +707,34 @@ async function loadMarket() {
 
 function renderMarket(m) {
   document.getElementById('m-title').textContent = m.q;
-  document.getElementById('m-submeta').textContent = `${m.sub} · Volume ${fmtNum(m.vol)} ₿ · liquidité b=${m.b.toFixed(0)}`;
+  let submeta = `${m.sub} · Volume ${fmtNum(m.vol)} S · liquidité b=${m.b.toFixed(0)}`;
+  if (m.type === 'chaos' && m.durationH) submeta = `⚡ Mode Chaos · ${m.durationH}h · ` + submeta;
+  document.getElementById('m-submeta').textContent = submeta;
   document.getElementById('m-price').textContent = (m.price * 100).toFixed(1) + '%';
-
-  // Chart SVG
   drawChart(m.history);
 
-  // Recent
+  // Bankroll publique : qui parie quoi
   const rec = document.getElementById('m-recent');
   rec.innerHTML = (m.recent.length === 0)
-    ? '<div style="font-size: 12px; color: var(--text-dim);">Aucun pari pour l\'instant.</div>'
+    ? '<div style="font-size: 12px; color: var(--text-dim); font-style: italic;">Personne n\'a encore osé. C\'est ton moment.</div>'
     : m.recent.map(r => `
-        <div style="display:flex; justify-content: space-between; padding: 6px 0; font-size: 12px; border-bottom: 1px solid var(--border);">
-          <span><b>${escapeHtml(r.pseudo)}</b> · <span style="color: ${r.side==='yes'?'var(--yes)':'var(--no)'}; font-weight: 600;">${r.side.toUpperCase()}</span> ${r.shares.toFixed(0)} parts</span>
-          <span class="tabular" style="color: var(--text-dim);">${fmtNum(r.cost)} ₿ · ${fmtAgo(r.t)}</span>
+        <div style="display:flex; justify-content: space-between; padding: 7px 0; font-size: 12px; border-bottom: 1px solid var(--border);">
+          <span><b>${escapeHtml(r.pseudo)}</b> · <span style="color: ${r.side==='yes'?'var(--yes)':'var(--no)'}; font-weight: 700;">${r.side.toUpperCase()}</span> ${r.shares.toFixed(0)} parts</span>
+          <span class="tabular" style="color: var(--text-dim);">${fmtNum(r.cost)} S · ${fmtAgo(r.t)}</span>
         </div>`).join('');
 
-  // Order panel
   document.getElementById('ot-yes').classList.toggle('active', currentSide === 'yes');
   document.getElementById('ot-no').classList.toggle('active', currentSide === 'no');
-  document.getElementById('o-bal').textContent = fmtNum(m.myBalance) + ' ₿';
+  document.getElementById('o-bal').textContent = fmtNum(m.myBalance) + ' S';
   const place = document.getElementById('o-place');
   place.className = 'place ' + currentSide;
   place.textContent = currentSide === 'yes' ? 'Acheter OUI' : 'Acheter NON';
 
-  // My position
   const pos = m.myPosition || { yes: 0, no: 0, costYes: 0, costNo: 0 };
   document.getElementById('m-mypos').innerHTML = (pos.yes > 0 || pos.no > 0) ? `
-    ${pos.yes > 0 ? `<div>OUI : <b style="color: var(--yes);">${pos.yes.toFixed(0)} parts</b> · coût ${fmtNum(pos.costYes)} ₿</div>` : ''}
-    ${pos.no > 0  ? `<div>NON : <b style="color: var(--no);">${pos.no.toFixed(0)} parts</b> · coût ${fmtNum(pos.costNo)} ₿</div>` : ''}
-  ` : 'Pas de position sur ce marché.';
+    ${pos.yes > 0 ? `<div>OUI : <b class="neon-yes">${pos.yes.toFixed(0)} parts</b> · coût ${fmtNum(pos.costYes)} S</div>` : ''}
+    ${pos.no > 0  ? `<div>NON : <b class="neon-no">${pos.no.toFixed(0)} parts</b> · coût ${fmtNum(pos.costNo)} S</div>` : ''}
+  ` : 'Pas de position. Encore.';
 
   updateOrderPreview();
 }
@@ -683,26 +748,18 @@ function updateOrderPreview() {
   const m = modalMarket;
   const amount = parseFloat(document.getElementById('o-amount').value) || 0;
   const sidePrice = currentSide === 'yes' ? m.price : (1 - m.price);
-  document.getElementById('o-price').textContent = sidePrice.toFixed(3) + ' ₿';
-  // Approx shares (server is authoritative)
-  const shares = sharesForBudget({ qY: m.qY || 0, qN: m.qN || 0, b: m.b }, currentSide, amount, m.price);
-  // Use simple estimate: shares ≈ amount / sidePrice with mild penalty
+  document.getElementById('o-price').textContent = sidePrice.toFixed(3) + ' S';
   const approxShares = amount > 0 ? estimateShares(m, currentSide, amount) : 0;
   const avg = approxShares > 0 ? amount / approxShares : 0;
   document.getElementById('o-shares').textContent = approxShares.toFixed(2);
-  document.getElementById('o-avg').textContent = avg.toFixed(3) + ' ₿';
-  document.getElementById('o-payout').textContent = '+' + fmtNum(approxShares - amount) + ' ₿ si gagnant';
+  document.getElementById('o-avg').textContent = avg.toFixed(3) + ' S';
+  document.getElementById('o-payout').textContent = '+' + fmtNum(approxShares - amount) + ' S si gagnant';
   const place = document.getElementById('o-place');
   place.disabled = amount <= 0 || amount > m.myBalance;
   if (amount > m.myBalance) place.textContent = 'Solde insuffisant';
-  else place.textContent = (currentSide === 'yes' ? 'Acheter OUI · ' : 'Acheter NON · ') + fmtNum(amount) + ' ₿';
+  else place.textContent = (currentSide === 'yes' ? 'Acheter OUI · ' : 'Acheter NON · ') + fmtNum(amount) + ' S';
 }
 
-// Reproduce LMSR client-side just for the preview
-function lmsrPrice(qY, qN, b) {
-  const m = Math.max(qY, qN);
-  return Math.exp((qY-m)/b) / (Math.exp((qY-m)/b) + Math.exp((qN-m)/b));
-}
 function lmsrCost(qY, qN, b) {
   const m = Math.max(qY, qN);
   return m + b * Math.log(Math.exp((qY-m)/b) + Math.exp((qN-m)/b));
@@ -713,7 +770,6 @@ function tradeCostL(qY, qN, b, side, shares) {
 }
 function estimateShares(m, side, budget) {
   if (budget <= 0) return 0;
-  // Reconstruct (qY, qN) from price and b: qY-qN = b*log(p/(1-p)). Set qN=0.
   const qY = m.b * Math.log(m.price / (1 - m.price));
   const qN = 0;
   let lo = 0, hi = budget * 100;
@@ -723,7 +779,6 @@ function estimateShares(m, side, budget) {
   }
   return lo;
 }
-function sharesForBudget() { return 0; } // unused
 
 function setAmount(v) {
   if (v === 'max') document.getElementById('o-amount').value = Math.floor(modalMarket.myBalance);
@@ -738,15 +793,47 @@ async function placeBet() {
   try {
     const res = await api('POST', `/leagues/${currentLeagueId}/bet`,
       { marketId: modalMarket.id, side: currentSide, amount });
-    toast(`Ordre exécuté · ${res.shares.toFixed(0)} parts ${currentSide.toUpperCase()}`);
+    const punchlines = currentSide === 'yes'
+      ? [`Tu mises gros sur le OUI · ${res.shares.toFixed(0)} parts.`, `${res.shares.toFixed(0)} OUI · t'as raison ou tu vas pleurer.`]
+      : [`${res.shares.toFixed(0)} NON · le contrarian assumé.`, `Tu shortes · ${res.shares.toFixed(0)} parts NON.`];
+    toast(punchlines[Math.floor(Math.random()*punchlines.length)]);
     await loadMarket();
     refreshLeague();
   } catch (e) { toast(e.message, true); }
 }
 
-/* ----------------------------------------------------------------- */
-/* Drawing & helpers                                                  */
-/* ----------------------------------------------------------------- */
+/* ---------- Bankroll publique (par membre) ---------- */
+function openBankroll(userId) {
+  if (!currentLeague) return;
+  const member = currentLeague.leaderboard.find(m => m.userId === userId);
+  if (!member) return;
+  document.getElementById('bankrollModal').classList.add('show');
+  document.getElementById('bk-title').textContent = `Bankroll de @${member.pseudo}`;
+  document.getElementById('bk-meta').innerHTML = `
+    <span class="tier-${member.tier}">${member.tier}</span>
+    · Indice ${member.indicePolitique>=0?'+':''}${(member.indicePolitique*100).toFixed(1)}%
+    · Solde ${fmtNum(member.balance)} S
+    · Positions : ${member.positionsCount}
+    · Total ${fmtNum(member.total)} S
+  `;
+  // Liste des paris récents de ce membre dans le feed d'activité
+  const acts = currentLeague.activity.filter(a => a.userId === userId && a.type === 'bet').slice(0, 20);
+  const positions = document.getElementById('bk-positions');
+  if (acts.length === 0) {
+    positions.innerHTML = '<div class="empty">Aucun pari récent. Joueur prudent ou en embuscade.</div>';
+  } else {
+    positions.innerHTML = `<h3 style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); margin: 0 0 8px;">Derniers paris</h3>` +
+      acts.map(a => `
+        <div class="pos-row">
+          <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(a.text)}</span>
+          <span style="color: var(--text-dim); font-size: 11px; white-space: nowrap;">${fmtAgo(a.t)}</span>
+        </div>
+      `).join('');
+  }
+}
+function closeBankroll() { document.getElementById('bankrollModal').classList.remove('show'); }
+
+/* ---------- Helpers ---------- */
 function drawChart(history) {
   const svg = document.getElementById('m-chart');
   const w = 600, h = 220;
@@ -761,10 +848,10 @@ function drawChart(history) {
   const area = path + ` L${pad.l + innerW},${pad.t + innerH} L${pad.l},${pad.t + innerH} Z`;
   const ticks = [0, .25, .5, .75, 1].map(v => {
     const y = pad.t + (1 - v) * innerH;
-    return `<line x1="${pad.l}" y1="${y}" x2="${w-pad.r}" y2="${y}" stroke="#1c2230" stroke-width="1"/>
-            <text x="${pad.l-6}" y="${y+4}" fill="#8b949e" font-size="10" text-anchor="end">${(v*100)|0}%</text>`;
+    return `<line x1="${pad.l}" y1="${y}" x2="${w-pad.r}" y2="${y}" stroke="#1a1f29" stroke-width="1"/>
+            <text x="${pad.l-6}" y="${y+4}" fill="#8b95aa" font-size="10" text-anchor="end">${(v*100)|0}%</text>`;
   }).join('');
-  svg.innerHTML = `${ticks}<path d="${area}" fill="rgba(34,197,94,.12)"/><path d="${path}" stroke="var(--yes)" stroke-width="2" fill="none"/>`;
+  svg.innerHTML = `${ticks}<path d="${area}" fill="rgba(57, 255, 20, 0.10)"/><path d="${path}" stroke="#39ff14" stroke-width="2" fill="none" filter="drop-shadow(0 0 4px rgba(57,255,20,0.6))"/>`;
 }
 
 function sparkPath(history) {
@@ -777,7 +864,7 @@ function sparkPath(history) {
     return (i === 0 ? 'M' : 'L') + x.toFixed(1) + ',' + y.toFixed(1);
   }).join(' ');
   const last = pts[pts.length-1].p, first = pts[0].p;
-  const color = last >= first ? 'var(--yes)' : 'var(--no)';
+  const color = last >= first ? '#39ff14' : '#ff0844';
   return `<path d="${path}" stroke="${color}" stroke-width="1.5" fill="none"/>`;
 }
 
@@ -796,12 +883,11 @@ function initials(s) {
   return s.replace(/[^a-zA-Z0-9_]/g,'').slice(0,2).toUpperCase();
 }
 function avatarBg(s) {
-  const palette = ['#FAC775','#B5D4F4','#CECBF6','#9FE1CB','#F4C0D1','#F5C4B3','#C0DD97','#D3D1C7'];
+  const palette = ['#39ff14','#ff0844','#ffd400','#00d4ff','#ff6ec7','#7c3aed','#10b981','#f59e0b'];
   let h = 0; for (let i = 0; i < s.length; i++) h = (h*31 + s.charCodeAt(i)) >>> 0;
   return palette[h % palette.length];
 }
 
-/* Toast */
 let toastT = null;
 function toast(msg, isError) {
   document.querySelectorAll('.toast').forEach(el => el.remove());
@@ -813,10 +899,8 @@ function toast(msg, isError) {
   toastT = setTimeout(() => el.remove(), 3500);
 }
 
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-/* Auto refresh league view every 8s */
-setInterval(() => { if (currentLeagueId && !document.getElementById('modal').classList.contains('show')) refreshLeague(); }, 8000);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeBankroll(); } });
+setInterval(() => { if (currentLeagueId && !document.getElementById('modal').classList.contains('show') && !document.getElementById('bankrollModal').classList.contains('show')) refreshLeague(); }, 8000);
 
 boot();
 </script>
