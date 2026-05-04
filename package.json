@@ -1,0 +1,16 @@
+{
+  "name": "elysmarket",
+  "version": "0.1.0",
+  "description": "Plateforme de paris politiques hors-argent à la Mon Petit Gazon — backend + frontend.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

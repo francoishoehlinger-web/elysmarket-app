@@ -1,0 +1,10 @@
+# Dépendances installées par npm — Railway les réinstallera lui-même
+node_modules/
+
+# Base de données — ne pas pousser le contenu local sur le repo public
+db.json
+
+# Logs et fichiers temporaires
+*.log
+.DS_Store
+.env
