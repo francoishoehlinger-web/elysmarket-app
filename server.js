@@ -14,7 +14,9 @@ const path    = require('path');
 const crypto  = require('crypto');
 
 const PORT    = process.env.PORT || 3000;
-const DB_FILE = path.join(__dirname, 'db.json');
+// DB_PATH peut être surchargé via variable d'environnement (utile pour
+// monter un volume persistant sur Railway/Fly/etc.). Par défaut : à côté du code.
+const DB_FILE = process.env.DB_PATH || path.join(__dirname, 'db.json');
 const STARTING_BULLETINS = 10000; // Solde initial par membre dans une ligue
 
 /* ------------------------------------------------------------------ */
@@ -75,6 +77,10 @@ function defaultDb() {
   return { users: [], leagues: [], _nextId: { league: 1, bet: 1, msg: 1 } };
 }
 function loadDb() {
+  // Créer le dossier parent s'il manque (utile pour les volumes montés vides)
+  const dir = path.dirname(DB_FILE);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+
   if (fs.existsSync(DB_FILE)) {
     try { db = JSON.parse(fs.readFileSync(DB_FILE, 'utf8')); }
     catch (e) { console.error('db corrupt, reinit'); db = defaultDb(); }
@@ -82,6 +88,7 @@ function loadDb() {
     db = defaultDb();
   }
   if (!db._nextId) db._nextId = { league: 1, bet: 1, msg: 1 };
+  console.log(`Base de données : ${DB_FILE}`);
 }
 let saveTimer = null;
 function saveDb() {
