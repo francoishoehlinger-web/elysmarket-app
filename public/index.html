@@ -2,8 +2,21 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>AgoraX — Marchés prédictifs entre amis</title>
+<meta name="description" content="Marché prédictif politique entre amis. Tu n'as pas une opinion, tu as une intuition." />
+<meta name="theme-color" content="#0a0d12" />
+<link rel="manifest" href="/manifest.json" />
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+<link rel="apple-touch-icon" href="/icon-192.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="AgoraX" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta property="og:title" content="AgoraX" />
+<meta property="og:description" content="Tu n'as pas une opinion, tu as une intuition. Marché prédictif politique entre amis." />
+<meta property="og:type" content="website" />
 <style>
   :root {
     --bg: #0a0d12; --bg-elev: #12161e; --bg-elev-2: #1a1f29;
@@ -901,6 +914,13 @@ function toast(msg, isError) {
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeBankroll(); } });
 setInterval(() => { if (currentLeagueId && !document.getElementById('modal').classList.contains('show') && !document.getElementById('bankrollModal').classList.contains('show')) refreshLeague(); }, 8000);
+
+/* PWA · enregistre le service worker pour rendre AgoraX installable */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(err => console.warn('SW registration failed', err));
+  });
+}
 
 boot();
 </script>
