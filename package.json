@@ -1,7 +1,7 @@
 {
-  "name": "elysmarket",
-  "version": "0.1.0",
-  "description": "Plateforme de paris politiques hors-argent à la Mon Petit Gazon — backend + frontend.",
+  "name": "agorax",
+  "version": "0.2.0",
+  "description": "AgoraX — marché prédictif politique entre amis. Hors argent, monnaie virtuelle (Solidi). Inspiré Polymarket × Mon Petit Gazon.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

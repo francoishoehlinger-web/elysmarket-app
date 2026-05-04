@@ -1,20 +1,30 @@
-# ÉlysMarket
+# AgoraX
 
-Plateforme de paris politiques **hors argent** entre amis — équivalent Mon Petit Gazon
-adapté aux marchés prédictifs sur les élections françaises (Présidentielle 2027,
-Législatives, politique générale).
+> Tu n'as pas une opinion. Tu as une intuition.
+
+Plateforme de paris politiques **hors argent** entre amis — Polymarket × Mon Petit Gazon
+adapté aux scrutins français (Présidentielle 2027, Législatives, politique générale)
+et au quotidien fou de la Ve République.
 
 ## Concept
 
-- Chaque joueur crée ou rejoint une **ligue privée** via un code à 7 caractères.
-- À l'inscription dans une ligue, chacun reçoit **10 000 bulletins virtuels (₿)**.
-- Les marchés sont des questions binaires (OUI / NON). Le prix d'une part = la
-  probabilité estimée par le marché. Une part « OUI » paie 1 bulletin si l'événement
-  se réalise, sinon 0.
-- Le moteur de marché est un **LMSR** (Logarithmic Market Scoring Rule) — chaque
-  ligue a son propre carnet, donc les prix peuvent diverger d'une ligue à l'autre.
-- Le **propriétaire** de la ligue résout les marchés à leur clôture (paiement
-  automatique de tous les détenteurs de parts gagnantes).
+- **Tu n'argumentes pas. Tu anticipes.** Chaque événement = un marché binaire OUI/NON.
+- **Ligues privées** : tu joues entre potes, collègues, anciens du lycée — code à 7 caractères pour rejoindre.
+- **Solidi** : la monnaie virtuelle. Chaque membre démarre avec 10 000 S. Le prix d'une part = la
+  probabilité estimée par le marché. Une part « OUI » paie 1 S si l'événement se réalise.
+- **Moteur LMSR** (Logarithmic Market Scoring Rule) — chaque ligue a son propre carnet, donc les
+  prix peuvent diverger d'une ligue à l'autre.
+- Le **propriétaire** résout les marchés à leur clôture (paiement automatique des gagnants).
+
+## Features différenciantes
+
+- **⚡ Mode Chaos** : marchés ultra courts (2h, 6h, 12h, 24h, 48h). Très volatiles. Très fun.
+  Du genre « Macron va-t-il poster sur X dans les 2 prochaines heures ? ».
+- **🧠 Indice Politique** : ton score de crédibilité dans la ligue. Tu deviens *Pythie* si tu
+  vises juste, *Néophyte* si tu te plantes. Cinq tiers : Pythie · Devin · Sage · Apprenti · Néophyte.
+- **🪙 Bankroll publique** : clique sur n'importe quel membre du classement → tu vois ses paris.
+  Transparence totale, tension maximale.
+- **💬 Trash talk intégré** : chat de ligue dans le panneau de droite. Indispensable.
 
 ## Lancer en local
 
@@ -28,17 +38,26 @@ npm start
 
 Puis ouvrir <http://localhost:3000>.
 
-Les données persistent dans `db.json` à la racine du projet — supprimez ce fichier
-pour repartir de zéro.
+Données persistées dans `db.json` (à la racine du projet par défaut, ou à l'emplacement défini
+par la variable d'environnement `DB_PATH` — utile pour un volume persistant en prod).
+
+## Déployer en prod (Railway)
+
+1. Push sur GitHub.
+2. *New Project → Deploy from GitHub repo* sur <https://railway.app>.
+3. Settings → Volumes → mount `/data`.
+4. Settings → Variables → `DB_PATH=/data/db.json`.
+5. Settings → Networking → Generate Domain.
 
 ## Architecture
 
 ```
 elysmarket-app/
-├── server.js          # Backend Express — auth + leagues + bets + LMSR
+├── server.js          # Backend Express — auth + leagues + bets + LMSR + Mode Chaos
 ├── package.json
 ├── public/
-│   └── index.html     # Frontend SPA vanilla JS (auth → home → league)
+│   └── index.html     # Frontend SPA (auth → home → league)
+├── .gitignore
 └── db.json            # Persistance (créé au 1er lancement)
 ```
 
@@ -51,25 +70,25 @@ elysmarket-app/
 | GET     | `/api/me`                          | oui  | Mon profil + ligues                      |
 | POST    | `/api/leagues`                     | oui  | `{name}` → crée une ligue                |
 | POST    | `/api/leagues/join`                | oui  | `{code}` → rejoint une ligue             |
-| GET     | `/api/leagues/:id`                 | oui  | Classement, marchés, activité, chat      |
-| GET     | `/api/leagues/:id/markets/:mid`    | oui  | Détail d'un marché (historique, position)|
+| GET     | `/api/leagues/:id`                 | oui  | Classement (avec Indice Politique), marchés, activité, chat |
+| GET     | `/api/leagues/:id/markets/:mid`    | oui  | Détail d'un marché (historique, position, bankroll publique) |
 | POST    | `/api/leagues/:id/bet`             | oui  | `{marketId, side:'yes'|'no', amount}`    |
 | POST    | `/api/leagues/:id/message`         | oui  | `{text}` poste un message dans le chat   |
-| POST    | `/api/leagues/:id/resolve`         | oui (owner) | `{marketId, outcome:'yes'|'no'}` clôt le marché |
+| POST    | `/api/leagues/:id/resolve`         | oui (owner) | `{marketId, outcome}` clôt le marché |
 
-Auth par **bearer token** dans `Authorization: Bearer <token>`.
-
-## Stack
-
-- **Backend** : Node.js + Express, persistance JSON (zero native deps).
-- **Frontend** : HTML/CSS/JS vanilla — un seul fichier, pas de build.
-- **Market maker** : LMSR avec liquidité paramétrable par ligue.
+Auth par bearer token dans `Authorization: Bearer <token>`.
 
 ## Roadmap
 
 - WebSocket pour le push temps-réel des prix et du chat
 - Marchés multi-issues (au-delà du binaire OUI/NON)
-- Résolution automatique via oracle (Wikipédia / API ministère de l'intérieur)
+- Résolution automatique des marchés Mode Chaos via oracle (API X, Wikipédia, etc.)
 - Système de saisons (reset trimestriel des classements)
 - Trophées et achievements (premier pari gagnant, série de 5, etc.)
 - Migration vers SQLite (`better-sqlite3`) au-delà de quelques centaines d'utilisateurs
+
+## Punchlines maison
+
+> « Tu sens venir la dinguerie politique ou pas ? »
+> « Les marchés sont chauds. Toi aussi ? »
+> « Spoiler : quelqu'un va dire un truc qu'il ne fallait pas. »

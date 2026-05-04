@@ -1,5 +1,5 @@
 /**
- * ÉlysMarket — backend d'une plateforme de paris politiques hors argent
+ * AgoraX — backend d'une plateforme de paris politiques hors argent
  * (à la Mon Petit Gazon). Stockage : un simple fichier JSON sur disque.
  *
  * Lancer :
@@ -17,30 +17,40 @@ const PORT    = process.env.PORT || 3000;
 // DB_PATH peut être surchargé via variable d'environnement (utile pour
 // monter un volume persistant sur Railway/Fly/etc.). Par défaut : à côté du code.
 const DB_FILE = process.env.DB_PATH || path.join(__dirname, 'db.json');
-const STARTING_BULLETINS = 10000; // Solde initial par membre dans une ligue
+const STARTING_SOLIDI = 10000; // Solde initial par membre dans une ligue (en Solidi)
 
 /* ------------------------------------------------------------------ */
 /* Définitions de marchés (questions globales — la liquidité est par ligue) */
 /* ------------------------------------------------------------------ */
+// type: 'long' = marché classique, 'chaos' = Mode Chaos (court, volatile, fun)
 const SEED_MARKETS = [
-  { id:'p27-philippe',   cat:'pres', icon:'EP',  q:"Édouard Philippe sera-t-il élu Président en 2027 ?",         sub:"Présidentielle 2027 · Vainqueur", p0:0.21 },
-  { id:'p27-bardella',   cat:'pres', icon:'JB',  q:"Jordan Bardella sera-t-il élu Président en 2027 ?",          sub:"Présidentielle 2027 · Vainqueur", p0:0.20 },
-  { id:'p27-lepen',      cat:'pres', icon:'MLP', q:"Marine Le Pen sera-t-elle élue Présidente en 2027 ?",         sub:"Présidentielle 2027 · Vainqueur", p0:0.11 },
-  { id:'p27-attal',      cat:'pres', icon:'GA',  q:"Gabriel Attal sera-t-il élu Président en 2027 ?",             sub:"Présidentielle 2027 · Vainqueur", p0:0.08 },
-  { id:'p27-glucksmann', cat:'pres', icon:'RG',  q:"Raphaël Glucksmann sera-t-il élu Président en 2027 ?",        sub:"Présidentielle 2027 · Vainqueur", p0:0.07 },
-  { id:'p27-melenchon',  cat:'pres', icon:'JLM', q:"Jean-Luc Mélenchon sera-t-il élu Président en 2027 ?",        sub:"Présidentielle 2027 · Vainqueur", p0:0.04 },
-  { id:'p27-other',      cat:'pres', icon:'?',   q:"Un autre candidat sera-t-il élu Président en 2027 ?",         sub:"Présidentielle 2027 · Vainqueur", p0:0.20 },
-  { id:'p27-r2-bardella',cat:'pres', icon:'JB',  q:"Jordan Bardella se qualifiera-t-il pour le 2nd tour de 2027 ?",sub:"Présidentielle 2027 · 2nd tour", p0:0.64 },
-  { id:'p27-r2-philippe',cat:'pres', icon:'EP',  q:"Édouard Philippe se qualifiera-t-il pour le 2nd tour de 2027 ?",sub:"Présidentielle 2027 · 2nd tour", p0:0.55 },
-  { id:'p27-r2-melenchon',cat:'pres',icon:'JLM', q:"Jean-Luc Mélenchon se qualifiera-t-il pour le 2nd tour de 2027 ?",sub:"Présidentielle 2027 · 2nd tour", p0:0.18 },
-  { id:'leg-rn-1st',     cat:'leg',  icon:'RN',  q:"Le RN sera-t-il le premier groupe à l'Assemblée après les prochaines législatives ?", sub:"Législatives · Composition", p0:0.49 },
-  { id:'leg-nfp-1st',    cat:'leg',  icon:'NFP', q:"Le NFP sera-t-il le premier groupe à l'Assemblée après les prochaines législatives ?", sub:"Législatives · Composition", p0:0.21 },
-  { id:'leg-maj-abs',    cat:'leg',  icon:'%',   q:"Un seul parti aura-t-il la majorité absolue après les prochaines législatives ?", sub:"Législatives · Composition", p0:0.17 },
-  { id:'leg-cohab',      cat:'leg',  icon:'⇄',   q:"Y aura-t-il une cohabitation après les prochaines législatives ?", sub:"Législatives · Conséquences", p0:0.46 },
-  { id:'gov-pm-2026',    cat:'other',icon:'PM',  q:"Y aura-t-il un nouveau Premier ministre avant le 31/12/2026 ?", sub:"Politique générale · Gouvernement", p0:0.37 },
-  { id:'gov-dissol-26',  cat:'other',icon:'⨯',   q:"L'Assemblée nationale sera-t-elle dissoute en 2026 ?",         sub:"Politique générale · Institutions", p0:0.24 },
-  { id:'gov-censure',    cat:'other',icon:'⚖',   q:"Une motion de censure sera-t-elle adoptée d'ici fin 2026 ?",   sub:"Politique générale · Institutions", p0:0.19 },
-  { id:'gov-ref',        cat:'other',icon:'☑',   q:"Un référendum aura-t-il lieu en France avant 2027 ?",          sub:"Politique générale · Institutions", p0:0.12 },
+  // === Marchés long terme ===
+  { id:'p27-philippe',   cat:'pres', type:'long', icon:'EP',  q:"Édouard Philippe sera-t-il élu Président en 2027 ?",         sub:"Présidentielle 2027 · Vainqueur", p0:0.21 },
+  { id:'p27-bardella',   cat:'pres', type:'long', icon:'JB',  q:"Jordan Bardella sera-t-il élu Président en 2027 ?",          sub:"Présidentielle 2027 · Vainqueur", p0:0.20 },
+  { id:'p27-lepen',      cat:'pres', type:'long', icon:'MLP', q:"Marine Le Pen sera-t-elle élue Présidente en 2027 ?",         sub:"Présidentielle 2027 · Vainqueur", p0:0.11 },
+  { id:'p27-attal',      cat:'pres', type:'long', icon:'GA',  q:"Gabriel Attal sera-t-il élu Président en 2027 ?",             sub:"Présidentielle 2027 · Vainqueur", p0:0.08 },
+  { id:'p27-glucksmann', cat:'pres', type:'long', icon:'RG',  q:"Raphaël Glucksmann sera-t-il élu Président en 2027 ?",        sub:"Présidentielle 2027 · Vainqueur", p0:0.07 },
+  { id:'p27-melenchon',  cat:'pres', type:'long', icon:'JLM', q:"Jean-Luc Mélenchon sera-t-il élu Président en 2027 ?",        sub:"Présidentielle 2027 · Vainqueur", p0:0.04 },
+  { id:'p27-other',      cat:'pres', type:'long', icon:'?',   q:"Un autre candidat sera-t-il élu Président en 2027 ?",         sub:"Présidentielle 2027 · Vainqueur", p0:0.20 },
+  { id:'p27-r2-bardella',cat:'pres', type:'long', icon:'JB',  q:"Jordan Bardella se qualifiera-t-il pour le 2nd tour de 2027 ?",sub:"Présidentielle 2027 · 2nd tour", p0:0.64 },
+  { id:'p27-r2-philippe',cat:'pres', type:'long', icon:'EP',  q:"Édouard Philippe se qualifiera-t-il pour le 2nd tour de 2027 ?",sub:"Présidentielle 2027 · 2nd tour", p0:0.55 },
+  { id:'p27-r2-melenchon',cat:'pres',type:'long', icon:'JLM', q:"Jean-Luc Mélenchon se qualifiera-t-il pour le 2nd tour de 2027 ?",sub:"Présidentielle 2027 · 2nd tour", p0:0.18 },
+  { id:'leg-rn-1st',     cat:'leg',  type:'long', icon:'RN',  q:"Le RN sera-t-il le premier groupe à l'Assemblée après les prochaines législatives ?", sub:"Législatives · Composition", p0:0.49 },
+  { id:'leg-nfp-1st',    cat:'leg',  type:'long', icon:'NFP', q:"Le NFP sera-t-il le premier groupe à l'Assemblée après les prochaines législatives ?", sub:"Législatives · Composition", p0:0.21 },
+  { id:'leg-maj-abs',    cat:'leg',  type:'long', icon:'%',   q:"Un seul parti aura-t-il la majorité absolue après les prochaines législatives ?", sub:"Législatives · Composition", p0:0.17 },
+  { id:'leg-cohab',      cat:'leg',  type:'long', icon:'⇄',   q:"Y aura-t-il une cohabitation après les prochaines législatives ?", sub:"Législatives · Conséquences", p0:0.46 },
+  { id:'gov-pm-2026',    cat:'other',type:'long', icon:'PM',  q:"Y aura-t-il un nouveau Premier ministre avant le 31/12/2026 ?", sub:"Politique générale · Gouvernement", p0:0.37 },
+  { id:'gov-dissol-26',  cat:'other',type:'long', icon:'⨯',   q:"L'Assemblée nationale sera-t-elle dissoute en 2026 ?",         sub:"Politique générale · Institutions", p0:0.24 },
+  { id:'gov-censure',    cat:'other',type:'long', icon:'⚖',   q:"Une motion de censure sera-t-elle adoptée d'ici fin 2026 ?",   sub:"Politique générale · Institutions", p0:0.19 },
+  { id:'gov-ref',        cat:'other',type:'long', icon:'☑',   q:"Un référendum aura-t-il lieu en France avant 2027 ?",          sub:"Politique générale · Institutions", p0:0.12 },
+
+  // === Mode Chaos — marchés ultra courts, fun, volatiles ===
+  { id:'chaos-tweet-em-2h', cat:'chaos', type:'chaos', durationH:2,  icon:'⚡', q:"Emmanuel Macron va-t-il poster sur X dans les 2 prochaines heures ?", sub:"Mode Chaos · 2h", p0:0.31 },
+  { id:'chaos-pm-demission-6h',cat:'chaos', type:'chaos', durationH:6, icon:'💥', q:"Le PM annoncera-t-il sa démission ce soir ?", sub:"Mode Chaos · 6h", p0:0.05 },
+  { id:'chaos-buzzword-24h',cat:'chaos', type:'chaos', durationH:24, icon:'🎤', q:"Le mot « inacceptable » sera-t-il prononcé à l'Assemblée demain ?", sub:"Mode Chaos · 24h", p0:0.78 },
+  { id:'chaos-greve-48h',  cat:'chaos', type:'chaos', durationH:48, icon:'✊', q:"Une grève nationale sera-t-elle annoncée d'ici 48h ?", sub:"Mode Chaos · 48h", p0:0.27 },
+  { id:'chaos-sondage-12h',cat:'chaos', type:'chaos', durationH:12, icon:'📊', q:"Un nouveau sondage va-t-il sortir avant minuit ?", sub:"Mode Chaos · 12h", p0:0.62 },
+  { id:'chaos-clash-6h',   cat:'chaos', type:'chaos', durationH:6,  icon:'🔥', q:"Quelqu'un va-t-il dire un truc qu'il ne fallait pas avant ce soir ?", sub:"Mode Chaos · 6h", p0:0.84 },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -201,7 +211,7 @@ app.post('/api/leagues', authMiddleware, (req, res) => {
   const league = {
     id, code, name,
     ownerId: req.user.id,
-    members: [{ userId: req.user.id, joinedAt: Date.now(), balance: STARTING_BULLETINS, positions: {} }],
+    members: [{ userId: req.user.id, joinedAt: Date.now(), balance: STARTING_SOLIDI, positions: {} }],
     markets,
     bets: [],
     messages: [],
@@ -220,7 +230,7 @@ app.post('/api/leagues/join', authMiddleware, (req, res) => {
   if (!league) return res.status(404).json({ error: 'code de ligue invalide' });
   if (league.members.some(m => m.userId === req.user.id))
     return res.status(400).json({ error: 'vous êtes déjà membre' });
-  league.members.push({ userId: req.user.id, joinedAt: Date.now(), balance: STARTING_BULLETINS, positions: {} });
+  league.members.push({ userId: req.user.id, joinedAt: Date.now(), balance: STARTING_SOLIDI, positions: {} });
   league.activity.unshift({ t: Date.now(), type: 'join', userId: req.user.id, text: `${req.user.pseudo} a rejoint la ligue` });
   league.activity = league.activity.slice(0, 50);
   saveDb();
@@ -234,7 +244,7 @@ app.get('/api/leagues/:id', authMiddleware, (req, res) => {
   if (!league.members.some(m => m.userId === req.user.id))
     return res.status(403).json({ error: 'vous n\'êtes pas membre' });
 
-  // Leaderboard : balance + valeur des positions (mark-to-market)
+  // Leaderboard : balance + valeur des positions (mark-to-market) + Indice Politique
   const leaderboard = league.members.map(m => {
     const u = db.users.find(uu => uu.id === m.userId);
     let posValue = 0;
@@ -243,24 +253,46 @@ app.get('/api/leagues/:id', authMiddleware, (req, res) => {
       const p  = lmsrPrice(ms.qY, ms.qN, ms.b);
       posValue += (pos.yes || 0) * p + (pos.no || 0) * (1 - p);
     }
+    const total = m.balance + posValue;
+    // Indice Politique : ROI vs solde initial. Tier de crédibilité dérivé.
+    const indicePolitique = (total - STARTING_SOLIDI) / STARTING_SOLIDI; // ex: +0.157 = +15,7%
+    let tier = 'Apprenti';
+    if (indicePolitique >  0.25) tier = 'Pythie';
+    else if (indicePolitique >  0.10) tier = 'Devin';
+    else if (indicePolitique >  0)    tier = 'Sage';
+    else if (indicePolitique > -0.10) tier = 'Apprenti';
+    else                              tier = 'Néophyte';
+    // Bankroll publique : nombre de positions ouvertes, montant exposé
+    const positionsCount = Object.values(m.positions || {}).filter(p => (p.yes||0) + (p.no||0) > 0.01).length;
     return {
       userId: m.userId,
       pseudo: u ? u.pseudo : '?',
       balance: m.balance,
       positionsValue: posValue,
-      total: m.balance + posValue,
+      total,
+      indicePolitique,
+      tier,
+      positionsCount,
     };
   }).sort((a, b) => b.total - a.total);
 
-  // Markets snapshot
+  // Markets snapshot — inclut le Mode Chaos avec son timer
+  const now = Date.now();
   const markets = SEED_MARKETS.map(def => {
     const s = league.markets[def.id] || initMarketState(def.p0);
     if (!league.markets[def.id]) league.markets[def.id] = s;
+    // Timer du mode Chaos : démarre à la création du marché dans la ligue
+    let chaosUntil = null;
+    if (def.type === 'chaos' && def.durationH) {
+      const startedAt = s.history[0]?.t || s.createdAt || now;
+      chaosUntil = startedAt + def.durationH * 3600 * 1000;
+    }
     return {
       ...def,
       price: lmsrPrice(s.qY, s.qN, s.b),
       vol: s.vol,
       history: s.history.slice(-30),
+      chaosUntil,
     };
   });
 
@@ -399,5 +431,5 @@ app.use('/api', (req, res) => res.status(404).json({ error: 'route inconnue' }))
 // Sur Railway/Fly/Heroku le serveur DOIT écouter sur 0.0.0.0 (toutes interfaces)
 // — sinon le proxy ne peut pas l'atteindre depuis l'extérieur du conteneur.
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`ÉlysMarket démarré · port ${PORT} · DB ${DB_FILE}`);
+  console.log(`AgoraX démarré · port ${PORT} · DB ${DB_FILE}`);
 });
