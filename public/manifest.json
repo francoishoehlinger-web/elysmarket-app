@@ -1,0 +1,27 @@
+{
+  "name": "AgoraX",
+  "short_name": "AgoraX",
+  "description": "Marché prédictif politique entre amis. Tu n'as pas une opinion, tu as une intuition.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0d12",
+  "theme_color": "#0a0d12",
+  "lang": "fr",
+  "categories": ["games", "social", "news"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
