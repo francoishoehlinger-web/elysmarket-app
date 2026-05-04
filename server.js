@@ -396,6 +396,8 @@ app.post('/api/leagues/:id/resolve', authMiddleware, (req, res) => {
 // --- 404 fallback for /api
 app.use('/api', (req, res) => res.status(404).json({ error: 'route inconnue' }));
 
-app.listen(PORT, () => {
-  console.log(`ÉlysMarket — http://localhost:${PORT}`);
+// Sur Railway/Fly/Heroku le serveur DOIT écouter sur 0.0.0.0 (toutes interfaces)
+// — sinon le proxy ne peut pas l'atteindre depuis l'extérieur du conteneur.
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`ÉlysMarket démarré · port ${PORT} · DB ${DB_FILE}`);
 });
