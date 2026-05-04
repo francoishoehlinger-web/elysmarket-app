@@ -6,8 +6,8 @@
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0a0d12",
-  "theme_color": "#0a0d12",
+  "background_color": "#FFF7ED",
+  "theme_color": "#FFF7ED",
   "lang": "fr",
   "categories": ["games", "social", "news"],
   "icons": [

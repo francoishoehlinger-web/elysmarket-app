@@ -18,13 +18,24 @@ et au quotidien fou de la Ve République.
 
 ## Features différenciantes
 
-- **⚡ Mode Chaos** : marchés ultra courts (2h, 6h, 12h, 24h, 48h). Très volatiles. Très fun.
-  Du genre « Macron va-t-il poster sur X dans les 2 prochaines heures ? ».
+- **⚡ Mode Chaos** : marchés ultra courts (1h, 2h, 4h, 6h, 8h, 12h, 24h, 48h). Très volatiles. Très fun.
+  Du genre « Macron va-t-il poster sur X dans la prochaine heure ? », « Lapsus mémorable au 20h ce soir ? »,
+  « Le PM va-t-il porter une cravate rouge au JT ? ».
+- **🎁 Bonus candidats** : marchés thématiques par personnalité. Macron buzzword bingo (« horizon »),
+  Mélenchon cite-t-il un philosophe en meeting, Le Pen utilise-t-elle « décadence », Bardella sur un
+  plateau TV, Glucksmann tweet sur l'Ukraine, etc.
+- **🎯 Combinés (parlays)** : empile jusqu'à 8 jambes dans un combiné. Toutes doivent gagner.
+  Cote multipliée, gain potentiel énorme. Parfait pour les paris fous entre potes.
 - **🧠 Indice Politique** : ton score de crédibilité dans la ligue. Tu deviens *Pythie* si tu
   vises juste, *Néophyte* si tu te plantes. Cinq tiers : Pythie · Devin · Sage · Apprenti · Néophyte.
 - **🪙 Bankroll publique** : clique sur n'importe quel membre du classement → tu vois ses paris.
   Transparence totale, tension maximale.
 - **💬 Trash talk intégré** : chat de ligue dans le panneau de droite. Indispensable.
+
+## Design
+
+Palette pastel funky inspirée Memphis × Y2K : crème buttercream, lilas vif, teal mint, rose corail,
+miel doré. Cards arrondies, badges en stickers tournés, accents typographiques.
 
 ## Lancer en local
 
@@ -73,6 +84,8 @@ elysmarket-app/
 | GET     | `/api/leagues/:id`                 | oui  | Classement (avec Indice Politique), marchés, activité, chat |
 | GET     | `/api/leagues/:id/markets/:mid`    | oui  | Détail d'un marché (historique, position, bankroll publique) |
 | POST    | `/api/leagues/:id/bet`             | oui  | `{marketId, side:'yes'|'no', amount}`    |
+| POST    | `/api/leagues/:id/combo`           | oui  | `{legs:[{marketId,side}], stake}` — combiné parlay |
+| POST    | `/api/leagues/:id/combo/:cid/resolve`| oui (owner) | `{outcome:'won'|'lost'}` résout un combiné |
 | POST    | `/api/leagues/:id/message`         | oui  | `{text}` poste un message dans le chat   |
 | POST    | `/api/leagues/:id/resolve`         | oui (owner) | `{marketId, outcome}` clôt le marché |
 

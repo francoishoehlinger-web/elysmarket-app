@@ -45,12 +45,31 @@ const SEED_MARKETS = [
   { id:'gov-ref',        cat:'other',type:'long', icon:'☑',   q:"Un référendum aura-t-il lieu en France avant 2027 ?",          sub:"Politique générale · Institutions", p0:0.12 },
 
   // === Mode Chaos — marchés ultra courts, fun, volatiles ===
-  { id:'chaos-tweet-em-2h', cat:'chaos', type:'chaos', durationH:2,  icon:'⚡', q:"Emmanuel Macron va-t-il poster sur X dans les 2 prochaines heures ?", sub:"Mode Chaos · 2h", p0:0.31 },
+  { id:'chaos-tweet-em-1h',cat:'chaos', type:'chaos', durationH:1,  icon:'⚡', q:"Macron va-t-il poster sur X dans la prochaine heure ?", sub:"Mode Chaos · 1h", p0:0.21 },
+  { id:'chaos-jt-cravate', cat:'chaos', type:'chaos', durationH:6,  icon:'👔', q:"Le PM va-t-il porter une cravate rouge au JT ce soir ?", sub:"Mode Chaos · 6h", p0:0.34 },
+  { id:'chaos-lapsus-jt',  cat:'chaos', type:'chaos', durationH:4,  icon:'🎙️', q:"Y aura-t-il un lapsus mémorable au 20h ce soir ?", sub:"Mode Chaos · 4h", p0:0.27 },
+  { id:'chaos-question-rep',cat:'chaos',type:'chaos', durationH:4,  icon:'🏛️', q:"Le mot « République » sera-t-il prononcé 5+ fois aux questions au gouvernement ?", sub:"Mode Chaos · 4h", p0:0.81 },
   { id:'chaos-pm-demission-6h',cat:'chaos', type:'chaos', durationH:6, icon:'💥', q:"Le PM annoncera-t-il sa démission ce soir ?", sub:"Mode Chaos · 6h", p0:0.05 },
-  { id:'chaos-buzzword-24h',cat:'chaos', type:'chaos', durationH:24, icon:'🎤', q:"Le mot « inacceptable » sera-t-il prononcé à l'Assemblée demain ?", sub:"Mode Chaos · 24h", p0:0.78 },
+  { id:'chaos-buzzword-24h',cat:'chaos', type:'chaos', durationH:24, icon:'🤬', q:"Le mot « inacceptable » prononcé à l'Assemblée demain ?", sub:"Mode Chaos · 24h", p0:0.78 },
+  { id:'chaos-bardella-hue', cat:'chaos', type:'chaos', durationH:8, icon:'😬', q:"Bardella va-t-il se faire huer en déplacement aujourd'hui ?", sub:"Mode Chaos · 8h", p0:0.22 },
+  { id:'chaos-melenchon-live',cat:'chaos', type:'chaos', durationH:6, icon:'📺', q:"Mélenchon va-t-il faire un live YouTube ce soir ?", sub:"Mode Chaos · 6h", p0:0.48 },
   { id:'chaos-greve-48h',  cat:'chaos', type:'chaos', durationH:48, icon:'✊', q:"Une grève nationale sera-t-elle annoncée d'ici 48h ?", sub:"Mode Chaos · 48h", p0:0.27 },
   { id:'chaos-sondage-12h',cat:'chaos', type:'chaos', durationH:12, icon:'📊', q:"Un nouveau sondage va-t-il sortir avant minuit ?", sub:"Mode Chaos · 12h", p0:0.62 },
   { id:'chaos-clash-6h',   cat:'chaos', type:'chaos', durationH:6,  icon:'🔥', q:"Quelqu'un va-t-il dire un truc qu'il ne fallait pas avant ce soir ?", sub:"Mode Chaos · 6h", p0:0.84 },
+  { id:'chaos-demission-12h',cat:'chaos', type:'chaos', durationH:12, icon:'🚪', q:"Un membre du gouvernement va-t-il démissionner avant minuit ?", sub:"Mode Chaos · 12h", p0:0.07 },
+  { id:'chaos-tendance-12h',cat:'chaos', type:'chaos', durationH:12, icon:'📈', q:"Un sujet politique va-t-il faire trending #1 sur X France aujourd'hui ?", sub:"Mode Chaos · 12h", p0:0.71 },
+
+  // === Bonus candidats — gimmicks marrants par personnalité ===
+  { id:'bonus-em-horizon',cat:'bonus', type:'bonus', candidate:'Macron', durationH:24, icon:'🌅', q:"Macron — buzzword bingo : prononce-t-il « horizon » aujourd'hui ?", sub:"Bonus Macron · 24h", p0:0.43 },
+  { id:'bonus-em-meme',   cat:'bonus', type:'bonus', candidate:'Macron', durationH:24, icon:'🤳', q:"Macron — apparaît-il dans un mème viral aujourd'hui ?", sub:"Bonus Macron · 24h", p0:0.55 },
+  { id:'bonus-jlm-philo', cat:'bonus', type:'bonus', candidate:'Mélenchon', durationH:24, icon:'📚', q:"Mélenchon — cite-t-il un philosophe en meeting aujourd'hui ?", sub:"Bonus Mélenchon · 24h", p0:0.74 },
+  { id:'bonus-mlp-decadence',cat:'bonus', type:'bonus', candidate:'Le Pen', durationH:24, icon:'⚜️', q:"Le Pen — utilise-t-elle le mot « décadence » dans une intervention ?", sub:"Bonus Le Pen · 24h", p0:0.36 },
+  { id:'bonus-jb-tv',     cat:'bonus', type:'bonus', candidate:'Bardella', durationH:8, icon:'🎬', q:"Bardella — apparaît-il sur un plateau TV ce soir ?", sub:"Bonus Bardella · 8h", p0:0.48 },
+  { id:'bonus-rg-ukraine',cat:'bonus', type:'bonus', candidate:'Glucksmann', durationH:24, icon:'🇺🇦', q:"Glucksmann — tweete-t-il sur l'Ukraine aujourd'hui ?", sub:"Bonus Glucksmann · 24h", p0:0.79 },
+  { id:'bonus-ep-cravate',cat:'bonus', type:'bonus', candidate:'Philippe', durationH:24, icon:'👞', q:"Philippe — apparaît-il en chemise sans cravate aujourd'hui ?", sub:"Bonus Philippe · 24h", p0:0.24 },
+  { id:'bonus-ga-jeune',  cat:'bonus', type:'bonus', candidate:'Attal', durationH:24, icon:'🧒', q:"Attal — fait-il référence à sa jeunesse dans une interview ?", sub:"Bonus Attal · 24h", p0:0.41 },
+  { id:'bonus-ez-livre',  cat:'bonus', type:'bonus', candidate:'Zemmour', durationH:48, icon:'📖', q:"Zemmour — annonce-t-il un nouveau livre ou tweet polémique ?", sub:"Bonus Zemmour · 48h", p0:0.52 },
+  { id:'bonus-of-faure',  cat:'bonus', type:'bonus', candidate:'Faure', durationH:24, icon:'🌹', q:"Faure — critique-t-il publiquement LFI aujourd'hui ?", sub:"Bonus Faure · 24h", p0:0.31 },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -244,7 +263,7 @@ app.get('/api/leagues/:id', authMiddleware, (req, res) => {
   if (!league.members.some(m => m.userId === req.user.id))
     return res.status(403).json({ error: 'vous n\'êtes pas membre' });
 
-  // Leaderboard : balance + valeur des positions (mark-to-market) + Indice Politique
+  // Leaderboard : balance + valeur des positions (mark-to-market) + combos + Indice Politique
   const leaderboard = league.members.map(m => {
     const u = db.users.find(uu => uu.id === m.userId);
     let posValue = 0;
@@ -253,7 +272,21 @@ app.get('/api/leagues/:id', authMiddleware, (req, res) => {
       const p  = lmsrPrice(ms.qY, ms.qN, ms.b);
       posValue += (pos.yes || 0) * p + (pos.no || 0) * (1 - p);
     }
-    const total = m.balance + posValue;
+    // Mark-to-market des combinés ouverts : stake × (jointProbNow / jointProbAtPlacement)
+    let comboValue = 0;
+    let openCombos = 0;
+    for (const c of (m.combos || [])) {
+      if (c.status !== 'open') continue;
+      openCombos++;
+      let jointNow = 1;
+      for (const leg of c.legs) {
+        const ms = league.markets[leg.marketId]; if (!ms) { jointNow = 0; break; }
+        const p = lmsrPrice(ms.qY, ms.qN, ms.b);
+        jointNow *= (leg.side === 'yes' ? p : (1 - p));
+      }
+      comboValue += c.stake * (jointNow / Math.max(c.jointProbAtPlacement, 1e-6));
+    }
+    const total = m.balance + posValue + comboValue;
     // Indice Politique : ROI vs solde initial. Tier de crédibilité dérivé.
     const indicePolitique = (total - STARTING_SOLIDI) / STARTING_SOLIDI; // ex: +0.157 = +15,7%
     let tier = 'Apprenti';
@@ -269,6 +302,8 @@ app.get('/api/leagues/:id', authMiddleware, (req, res) => {
       pseudo: u ? u.pseudo : '?',
       balance: m.balance,
       positionsValue: posValue,
+      comboValue,
+      openCombos,
       total,
       indicePolitique,
       tier,
@@ -379,6 +414,83 @@ app.post('/api/leagues/:id/bet', authMiddleware, (req, res) => {
     newPrice: lmsrPrice(s.qY, s.qN, s.b),
     balance: member.balance,
   });
+});
+
+// --- Place a COMBO bet (parlay) — toutes les jambes doivent gagner
+app.post('/api/leagues/:id/combo', authMiddleware, (req, res) => {
+  const league = db.leagues.find(l => l.id === parseInt(req.params.id));
+  if (!league) return res.status(404).json({ error: 'ligue introuvable' });
+  const member = league.members.find(m => m.userId === req.user.id);
+  if (!member) return res.status(403).json({ error: 'pas membre' });
+
+  const { legs, stake } = req.body || {};
+  if (!Array.isArray(legs) || legs.length < 2)
+    return res.status(400).json({ error: 'un combiné a besoin de 2 jambes minimum' });
+  if (legs.length > 8) return res.status(400).json({ error: '8 jambes maximum' });
+  if (!(stake > 0)) return res.status(400).json({ error: 'mise invalide' });
+  if (stake > member.balance) return res.status(400).json({ error: 'solde insuffisant' });
+
+  // Validation : marchés existent, sides valides, pas de doublons
+  const seen = new Set();
+  const enriched = [];
+  for (const leg of legs) {
+    if (!leg || !leg.marketId || !['yes','no'].includes(leg.side))
+      return res.status(400).json({ error: 'jambe invalide' });
+    if (seen.has(leg.marketId))
+      return res.status(400).json({ error: 'doublon de marché dans le combiné' });
+    seen.add(leg.marketId);
+    const def = SEED_MARKETS.find(m => m.id === leg.marketId);
+    if (!def) return res.status(400).json({ error: 'marché ' + leg.marketId + ' inconnu' });
+    const s = league.markets[leg.marketId] || (league.markets[leg.marketId] = initMarketState(def.p0));
+    const p = lmsrPrice(s.qY, s.qN, s.b);
+    const sidePrice = leg.side === 'yes' ? p : (1 - p);
+    enriched.push({ marketId: leg.marketId, side: leg.side, atPrice: sidePrice, q: def.q });
+  }
+
+  const jointProb = enriched.reduce((acc, l) => acc * l.atPrice, 1);
+  const potentialPayout = stake / Math.max(jointProb, 1e-6);
+
+  const combo = {
+    id: nextId('bet'),
+    userId: req.user.id,
+    legs: enriched,
+    stake,
+    jointProbAtPlacement: jointProb,
+    potentialPayout,
+    status: 'open', // 'open' | 'won' | 'lost'
+    createdAt: Date.now(),
+  };
+  member.combos = member.combos || [];
+  member.combos.push(combo);
+  member.balance -= stake;
+
+  league.activity.unshift({
+    t: Date.now(), type: 'combo', userId: req.user.id,
+    text: `${req.user.pseudo} a placé un combiné × ${enriched.length} pour ${Math.round(stake)} S (gain potentiel ${Math.round(potentialPayout)} S)`
+  });
+  league.activity = league.activity.slice(0, 50);
+  saveDb();
+  res.json({ ok: true, combo, balance: member.balance });
+});
+
+// --- (Owner) résoudre un combo manuellement (won / lost)
+app.post('/api/leagues/:id/combo/:cid/resolve', authMiddleware, (req, res) => {
+  const league = db.leagues.find(l => l.id === parseInt(req.params.id));
+  if (!league) return res.status(404).json({ error: 'ligue introuvable' });
+  if (league.ownerId !== req.user.id) return res.status(403).json({ error: 'propriétaire seulement' });
+  const { outcome } = req.body || {};
+  if (!['won','lost'].includes(outcome)) return res.status(400).json({ error: 'outcome invalide' });
+  const cid = parseInt(req.params.cid);
+  for (const m of league.members) {
+    const c = (m.combos || []).find(c => c.id === cid);
+    if (!c) continue;
+    if (c.status !== 'open') return res.status(400).json({ error: 'combiné déjà résolu' });
+    c.status = outcome;
+    if (outcome === 'won') m.balance += c.potentialPayout;
+    saveDb();
+    return res.json({ ok: true });
+  }
+  res.status(404).json({ error: 'combiné introuvable' });
 });
 
 // --- Post message in league chat
