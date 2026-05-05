@@ -70,6 +70,42 @@ const SEED_MARKETS = [
   { id:'bonus-ga-jeune',  cat:'bonus', type:'bonus', candidate:'Attal', durationH:24, icon:'🧒', q:"Attal — fait-il référence à sa jeunesse dans une interview ?", sub:"Bonus Attal · 24h", p0:0.41 },
   { id:'bonus-ez-livre',  cat:'bonus', type:'bonus', candidate:'Zemmour', durationH:48, icon:'📖', q:"Zemmour — annonce-t-il un nouveau livre ou tweet polémique ?", sub:"Bonus Zemmour · 48h", p0:0.52 },
   { id:'bonus-of-faure',  cat:'bonus', type:'bonus', candidate:'Faure', durationH:24, icon:'🌹', q:"Faure — critique-t-il publiquement LFI aujourd'hui ?", sub:"Bonus Faure · 24h", p0:0.31 },
+
+  // === News & Monde — Trump, cabinet US, guerres, géopolitique ===
+  // Trump short-term (Mode Chaos international)
+  { id:'monde-trump-truth-2h',  cat:'monde', type:'chaos', durationH:2,  icon:'📱', q:"Trump va-t-il poster sur Truth Social dans les 2 prochaines heures ?", sub:"News & Monde · 2h", p0:0.71 },
+  { id:'monde-trump-fakenews-12h',cat:'monde', type:'chaos', durationH:12, icon:'📰', q:"Trump va-t-il dire « fake news » dans une intervention aujourd'hui ?", sub:"News & Monde · 12h", p0:0.83 },
+  { id:'monde-trump-insult-24h',cat:'monde', type:'chaos', durationH:24, icon:'🥊', q:"Trump va-t-il insulter publiquement un journaliste aujourd'hui ?", sub:"News & Monde · 24h", p0:0.74 },
+  { id:'monde-trump-allcaps-12h',cat:'monde', type:'chaos', durationH:12, icon:'🔠', q:"Trump va-t-il poster un message TOUT EN MAJUSCULES aujourd'hui ?", sub:"News & Monde · 12h", p0:0.79 },
+
+  // Cabinet & administration US
+  { id:'monde-vance-eu',     cat:'monde', type:'long', icon:'🇺🇸', q:"JD Vance va-t-il critiquer un allié européen avant fin du mois ?",                  sub:"News & Monde · Cabinet US", p0:0.62 },
+  { id:'monde-rubio-lavrov', cat:'monde', type:'long', icon:'🤝', q:"Marco Rubio va-t-il rencontrer Lavrov en bilatéral d'ici fin du mois ?",         sub:"News & Monde · Cabinet US", p0:0.41 },
+  { id:'monde-cabinet-demis',cat:'monde', type:'long', icon:'🚪', q:"Un ministre US va-t-il démissionner ou être limogé ce trimestre ?",                sub:"News & Monde · Cabinet US", p0:0.45 },
+  { id:'monde-rfk-polemic',  cat:'monde', type:'chaos', durationH:24, icon:'💉', q:"RFK Jr. va-t-il faire une déclaration polémique sur la santé cette semaine ?", sub:"News & Monde · 24h", p0:0.66 },
+  { id:'monde-musk-trump',   cat:'monde', type:'long', icon:'🚀', q:"Elon Musk et Trump vont-ils publiquement s'engueuler avant fin du trimestre ?",  sub:"News & Monde · Politique US", p0:0.38 },
+  { id:'monde-impeach',      cat:'monde', type:'long', icon:'⚖️', q:"Une procédure d'impeachment sera-t-elle lancée contre Trump avant fin 2026 ?",   sub:"News & Monde · Politique US", p0:0.18 },
+
+  // Russie-Ukraine
+  { id:'monde-uk-cessez',    cat:'monde', type:'long', icon:'☮️', q:"Cessez-le-feu Russie-Ukraine signé avant fin 2026 ?",                            sub:"News & Monde · Russie-Ukraine", p0:0.32 },
+  { id:'monde-trump-poutine',cat:'monde', type:'long', icon:'🇷🇺', q:"Trump va-t-il rencontrer Poutine en personne en 2026 ?",                          sub:"News & Monde · Russie-Ukraine", p0:0.41 },
+  { id:'monde-uk-otan',      cat:'monde', type:'long', icon:'🛡️', q:"L'Ukraine sera-t-elle invitée à rejoindre l'OTAN avant fin 2027 ?",              sub:"News & Monde · Russie-Ukraine", p0:0.14 },
+  { id:'monde-sanctions-ru', cat:'monde', type:'long', icon:'🪙', q:"Sanctions US contre la Russie significativement allégées d'ici fin 2026 ?",       sub:"News & Monde · Russie-Ukraine", p0:0.27 },
+
+  // Moyen-Orient
+  { id:'monde-gaza-cessez',  cat:'monde', type:'long', icon:'🕊️', q:"Cessez-le-feu durable à Gaza tenu plus de 6 mois en 2026 ?",                     sub:"News & Monde · Israël-Gaza", p0:0.29 },
+  { id:'monde-iran-escal',   cat:'monde', type:'chaos', durationH:48, icon:'⚠️', q:"Nouvelle escalade militaire Israël-Iran d'ici 48h ?",              sub:"News & Monde · 48h", p0:0.18 },
+  { id:'monde-iran-nuke',    cat:'monde', type:'long', icon:'☢️', q:"L'Iran va-t-il annoncer la possession de l'arme nucléaire avant fin 2027 ?",     sub:"News & Monde · Moyen-Orient", p0:0.16 },
+  { id:'monde-saoud-iran',   cat:'monde', type:'long', icon:'🇸🇦', q:"Reprise des relations diplomatiques pleines Arabie-Iran avant fin 2026 ?",      sub:"News & Monde · Moyen-Orient", p0:0.43 },
+
+  // Asie / Pacifique
+  { id:'monde-chine-taiwan', cat:'monde', type:'long', icon:'🇨🇳', q:"La Chine va-t-elle mener une action militaire autour de Taïwan en 2026 ?",      sub:"News & Monde · Chine-Taïwan", p0:0.21 },
+  { id:'monde-coree',        cat:'monde', type:'long', icon:'🇰🇵', q:"Trump va-t-il rencontrer Kim Jong-un en 2026 ?",                                 sub:"News & Monde · Corée du Nord", p0:0.34 },
+
+  // Économie / Marchés
+  { id:'monde-sp500-ath',    cat:'monde', type:'long', icon:'📈', q:"Le S&P 500 atteindra-t-il un nouveau plus haut historique avant fin du trimestre ?", sub:"News & Monde · Marchés", p0:0.52 },
+  { id:'monde-recess-us',    cat:'monde', type:'long', icon:'📉', q:"Récession officielle aux États-Unis annoncée avant fin 2026 ?",                  sub:"News & Monde · Marchés", p0:0.31 },
+  { id:'monde-eurusd',       cat:'monde', type:'chaos', durationH:24, icon:'💶', q:"L'EUR/USD passera-t-il sous 1,05 d'ici demain soir ?",            sub:"News & Monde · 24h", p0:0.22 },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -145,6 +181,100 @@ function initMarketState(p0) {
   const b = 4000 + Math.floor(Math.random() * 4000); // liquidity per league
   const qY = b * Math.log(p0 / (1 - p0));
   return { qY, qN: 0, b, vol: 0, history: [{ t: Date.now(), p: p0 }] };
+}
+
+/* ------------------------------------------------------------------ */
+/* Saison hebdomadaire — points par rang à la fin de chaque semaine    */
+/* ------------------------------------------------------------------ */
+// Clé ISO semaine, ex "2026-W18" — semaines lundi → dimanche
+function getWeekKey(t) {
+  const d = new Date(t);
+  d.setUTCHours(0, 0, 0, 0);
+  // Jeudi de la même semaine ISO
+  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  const weekNum = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  return `${d.getUTCFullYear()}-W${String(weekNum).padStart(2,'0')}`;
+}
+// Timestamp UTC du prochain dimanche 23:59:59 (= fin de la semaine en cours)
+function getEndOfWeek(t) {
+  const d = new Date(t);
+  const dayOfWeek = d.getUTCDay() || 7; // 1=lundi … 7=dimanche
+  const daysUntilSunday = 7 - dayOfWeek;
+  d.setUTCDate(d.getUTCDate() + daysUntilSunday);
+  d.setUTCHours(23, 59, 59, 999);
+  return d.getTime();
+}
+// Points attribués selon le rang en fin de semaine (style MPG)
+function pointsForRank(rank, totalMembers) {
+  if (rank === 1) return 10;
+  if (rank === 2) return 7;
+  if (rank === 3) return 5;
+  if (rank === 4) return 3;
+  if (rank === 5) return 2;
+  return 1; // tout le monde marque au moins 1 point
+}
+// Snapshot la semaine écoulée si nécessaire. Mute league.members in-place.
+function rolloverWeekIfNeeded(league) {
+  const nowKey = getWeekKey(Date.now());
+  if (!league.lastWeekKey) {
+    league.lastWeekKey = nowKey;
+    return false;
+  }
+  if (league.lastWeekKey === nowKey) return false;
+
+  // On clôture la semaine précédente : on classe les membres par leur total actuel,
+  // on attribue les points et on les ajoute à seasonPoints.
+  const ranking = league.members.map(m => {
+    let posValue = 0;
+    for (const [mid, pos] of Object.entries(m.positions || {})) {
+      const ms = league.markets[mid]; if (!ms) continue;
+      const p = lmsrPrice(ms.qY, ms.qN, ms.b);
+      posValue += (pos.yes || 0) * p + (pos.no || 0) * (1 - p);
+    }
+    let comboValue = 0;
+    for (const c of (m.combos || [])) {
+      if (c.status !== 'open') continue;
+      let jp = 1;
+      for (const leg of c.legs) {
+        const ms = league.markets[leg.marketId]; if (!ms) { jp = 0; break; }
+        const p = lmsrPrice(ms.qY, ms.qN, ms.b);
+        jp *= (leg.side === 'yes' ? p : (1 - p));
+      }
+      comboValue += c.stake * (jp / Math.max(c.jointProbAtPlacement, 1e-6));
+    }
+    return { userId: m.userId, total: m.balance + posValue + comboValue };
+  }).sort((a, b) => b.total - a.total);
+
+  league.seasonHistory = league.seasonHistory || [];
+  const closedWeek = league.lastWeekKey;
+  const podium = [];
+  for (let i = 0; i < ranking.length; i++) {
+    const rank = i + 1;
+    const points = pointsForRank(rank, ranking.length);
+    const member = league.members.find(m => m.userId === ranking[i].userId);
+    if (!member) continue;
+    member.seasonPoints = (member.seasonPoints || 0) + points;
+    member.weeklyHistory = member.weeklyHistory || [];
+    member.weeklyHistory.push({ weekKey: closedWeek, rank, points, total: ranking[i].total });
+    if (member.weeklyHistory.length > 30) member.weeklyHistory = member.weeklyHistory.slice(-30);
+    if (rank <= 3) podium.push({ userId: member.userId, rank, points, total: ranking[i].total });
+  }
+  league.seasonHistory.unshift({ weekKey: closedWeek, podium, closedAt: Date.now() });
+  league.seasonHistory = league.seasonHistory.slice(0, 30);
+
+  // Activité publique : annonce du leader de la semaine
+  if (podium[0]) {
+    const winner = db.users.find(u => u.id === podium[0].userId);
+    league.activity.unshift({
+      t: Date.now(), type: 'season', userId: podium[0].userId,
+      text: `🏆 Semaine ${closedWeek} bouclée — @${winner?.pseudo || '?'} prend ${podium[0].points} pts (1ᵉʳ)`
+    });
+    league.activity = league.activity.slice(0, 50);
+  }
+
+  league.lastWeekKey = nowKey;
+  return true;
 }
 
 /* ------------------------------------------------------------------ */
@@ -230,12 +360,14 @@ app.post('/api/leagues', authMiddleware, (req, res) => {
   const league = {
     id, code, name,
     ownerId: req.user.id,
-    members: [{ userId: req.user.id, joinedAt: Date.now(), balance: STARTING_SOLIDI, positions: {} }],
+    members: [{ userId: req.user.id, joinedAt: Date.now(), balance: STARTING_SOLIDI, positions: {}, combos: [], seasonPoints: 0, weeklyHistory: [] }],
     markets,
     bets: [],
     messages: [],
     activity: [{ t: Date.now(), type: 'create', userId: req.user.id, text: `${req.user.pseudo} a créé la ligue` }],
     createdAt: Date.now(),
+    lastWeekKey: getWeekKey(Date.now()),
+    seasonHistory: [],
   };
   db.leagues.push(league);
   saveDb();
@@ -249,7 +381,7 @@ app.post('/api/leagues/join', authMiddleware, (req, res) => {
   if (!league) return res.status(404).json({ error: 'code de ligue invalide' });
   if (league.members.some(m => m.userId === req.user.id))
     return res.status(400).json({ error: 'vous êtes déjà membre' });
-  league.members.push({ userId: req.user.id, joinedAt: Date.now(), balance: STARTING_SOLIDI, positions: {} });
+  league.members.push({ userId: req.user.id, joinedAt: Date.now(), balance: STARTING_SOLIDI, positions: {}, combos: [], seasonPoints: 0, weeklyHistory: [] });
   league.activity.unshift({ t: Date.now(), type: 'join', userId: req.user.id, text: `${req.user.pseudo} a rejoint la ligue` });
   league.activity = league.activity.slice(0, 50);
   saveDb();
@@ -262,6 +394,9 @@ app.get('/api/leagues/:id', authMiddleware, (req, res) => {
   if (!league) return res.status(404).json({ error: 'ligue introuvable' });
   if (!league.members.some(m => m.userId === req.user.id))
     return res.status(403).json({ error: 'vous n\'êtes pas membre' });
+
+  // Snapshot semaine si on est passé en semaine suivante
+  rolloverWeekIfNeeded(league);
 
   // Leaderboard : balance + valeur des positions (mark-to-market) + combos + Indice Politique
   const leaderboard = league.members.map(m => {
@@ -308,8 +443,17 @@ app.get('/api/leagues/:id', authMiddleware, (req, res) => {
       indicePolitique,
       tier,
       positionsCount,
+      seasonPoints: m.seasonPoints || 0,
+      weeklyHistory: (m.weeklyHistory || []).slice(-8),
     };
   }).sort((a, b) => b.total - a.total);
+
+  // Pour chaque entrée, on calcule aussi les points hypothétiques de la semaine
+  // (basés sur le rang actuel — ça matérialise « si la semaine se clôturait maintenant »).
+  leaderboard.forEach((m, i) => {
+    m.weeklyRank = i + 1;
+    m.weeklyPointsLive = pointsForRank(i + 1, leaderboard.length);
+  });
 
   // Markets snapshot — inclut le Mode Chaos avec son timer
   const now = Date.now();
@@ -331,10 +475,26 @@ app.get('/api/leagues/:id', authMiddleware, (req, res) => {
     };
   });
 
+  // Saison : classement cumulatif + historique des semaines closes + countdown
+  const season = {
+    currentWeekKey: league.lastWeekKey || getWeekKey(Date.now()),
+    endOfWeek: getEndOfWeek(Date.now()),
+    standings: leaderboard.map(m => ({ userId: m.userId, pseudo: m.pseudo, seasonPoints: m.seasonPoints }))
+                          .sort((a, b) => b.seasonPoints - a.seasonPoints),
+    history: (league.seasonHistory || []).slice(0, 12).map(h => ({
+      weekKey: h.weekKey,
+      closedAt: h.closedAt,
+      podium: h.podium.map(p => ({
+        ...p,
+        pseudo: db.users.find(u => u.id === p.userId)?.pseudo || '?'
+      })),
+    })),
+  };
+
   res.json({
     id: league.id, code: league.code, name: league.name,
     ownerId: league.ownerId, createdAt: league.createdAt,
-    leaderboard, markets,
+    leaderboard, markets, season,
     activity: league.activity.slice(0, 25),
     messages: league.messages.slice(-30).map(m => ({
       ...m, pseudo: db.users.find(u => u.id === m.userId)?.pseudo || '?'
